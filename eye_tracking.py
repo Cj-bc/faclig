@@ -16,7 +16,7 @@ if __name__ == '__main__':
 
     DEVICE_ID = 0
 
-    cascade_file = "haarcascade_eye.xml"
+    cascade_file = "haarcascades/haarcascade_eye.xml"
     cascade = cv2.CascadeClassifier(cascade_file)
 
     cap = cv2.VideoCapture(DEVICE_ID)
