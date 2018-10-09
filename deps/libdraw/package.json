@@ -1,0 +1,8 @@
+{
+  "name": "libdraw",
+  "version": "0.0.1",
+  "description": "Drawing ASCII picture libraries",
+  "install": "install -b libdraw.sh ${PREFIX:-/usr/local}/bin/libdraw",
+  "scripts": [ "libdraw.sh" ]
+}
+
