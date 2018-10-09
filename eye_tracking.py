@@ -37,7 +37,9 @@ if __name__ == '__main__':
         # x: left > right
         # y: bottom > top
         for (x, y, w, h) in face_list:
-            print(f'x:{x}, y:{y}')
+            x_percent = round(x / width * 100)
+            y_percent = round(y / height * 100)
+            print(f'x:{x_percent}, y:{y_percent}')
             time.sleep(0.5)
 
         cv2.imshow(ORG_WINDOW_NAME, c_frame)
