@@ -41,8 +41,6 @@ if __name__ == '__main__':
              for part in parts]
 
     cap = cv2.VideoCapture(DEVICE_ID)
-    width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
-    height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
 
     end_flag, c_frame = cap.read()
     height, width, channels = c_frame.shape
