@@ -10,6 +10,7 @@ asset = {
         "eye": "eye.txt",
         "mouth": "mouth.txt"
         }
+import os
 
 cascade_file_root = "haarcascades"
 parts = [{
