@@ -52,7 +52,7 @@ if __name__ == '__main__':
         img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
         for  part in parts:
-            face_list = part.cascade.detectMultiScale(img_gray, minSize=(100, 100))
+            face_list = part['cascade'].detectMultiScale(img_gray, minSize=(100, 100))
 
             # x: left > right
             # y: bottom > top
