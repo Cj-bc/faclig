@@ -5,11 +5,6 @@
 import cv2
 import time
 import shutil
-asset = {
-        "asset_root": "src",
-        "eye": "eye.txt",
-        "mouth": "mouth.txt"
-        }
 import os
 
 cascade_file_root = "haarcascades"
