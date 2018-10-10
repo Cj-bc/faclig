@@ -14,14 +14,11 @@ import os
 
 cascade_file_root = "haarcascades"
 parts = [{
-            "part": "eye",
+            "part": "right_eye",
             "cascade_file": "haarcascade_eye.xml"},
          {
-             "part": "eye",
-             "cascade_file": "haarcascade_lefteye_2splits.xml"},
-         {
-             "part": "mouth",
-             "cascade_file": ""}
+             "part": "left_eye",
+             "cascade_file": "haarcascade_lefteye_2splits.xml"}
          ]
 
 
