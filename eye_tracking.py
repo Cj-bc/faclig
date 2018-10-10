@@ -57,9 +57,10 @@ if __name__ == '__main__':
             # x: left > right
             # y: bottom > top
             for (x, y, w, h) in face_list:
-                x_percent = round(x / width * 100)
-                y_percent = round(y / height * 100)
-                os.system(f'bash ./draw.sh {x_percent} {y_percent} {asset["asset_root"]}/{asset[part.part]}')
+                term_pos_x = int(round(x / width * TERM_SIZE.columns))
+                term_pos_y = int(round(y / height * TERM_SIZE.lines))
+
+                os.system(f'bash ./draw.sh {term_pos_x} {term_pos_y} {part["part"]}')
                 time.sleep(0.5)
         key = cv2.waitKey(INTERVAL)
         if key == ESC_KEY:
