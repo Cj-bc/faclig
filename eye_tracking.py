@@ -36,9 +36,9 @@ if __name__ == '__main__':
     DEVICE_ID = 0
 
     # add cascade object to each dict in parts
-    parts = [part.update({"cascade":
-                         cv2.CascadeClassifier(f'{cascade_file_root}/{part.cascade_file}')})
-             for part in parts]
+    [part.update({"cascade":
+                 cv2.CascadeClassifier(f'{cascade_file_root}/{part["cascade_file"]}')})
+     for part in parts]
 
     cap = cv2.VideoCapture(DEVICE_ID)
 
