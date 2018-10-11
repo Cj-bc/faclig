@@ -12,5 +12,15 @@ declare -Ar asset=([right_eye]="eye.txt" [left_eye]="eye.txt" [mouth]="mouth.txt
 x=$1
 y=$2
 file=$3
+fifo_name="faclig_${file}.fifo"
+
+if [ ! -z "$(cat $fifo_name)" ];then
+  local -i prev_x
+  local -i prev_y
+  read prev_x prev_y < $fifo_name
+  Draw::eracePicture $prev_x $prev_y ${asset_root}/${asset[$file]}
+fi
 
 Draw::drawAt $x $y ${asset_root}/${asset[$file]}
+[ -p "$fifo_name" ] || mkfifo $fifo_name
+echo "$x $y" > $fifo_name
