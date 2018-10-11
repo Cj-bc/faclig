@@ -6,6 +6,12 @@ import cv2
 import time
 import shutil
 import os
+import atexit
+
+def onexit():
+    os.system('bash ./onexit.sh')
+
+atexit.register(onexit)
 
 cascade_file_root = "haarcascades"
 parts = [{
