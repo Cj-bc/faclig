@@ -23,4 +23,4 @@ fi
 
 Draw::drawAt $x $y ${asset_root}/${asset[$file]}
 [ -p "$fifo_name" ] || mkfifo $fifo_name
-echo "$x $y" > $fifo_name
+echo "$x $y" > $fifo_name &
