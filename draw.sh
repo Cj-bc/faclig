@@ -15,8 +15,8 @@ file=$3
 fifo_name="faclig_${file}.fifo"
 
 if [ ! -z "$(cat $fifo_name)" ];then
-  local -i prev_x
-  local -i prev_y
+  declare -i prev_x
+  declare -i prev_y
   read prev_x prev_y < $fifo_name
   Draw::eracePicture $prev_x $prev_y ${asset_root}/${asset[$file]}
 fi
