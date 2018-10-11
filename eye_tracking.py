@@ -16,7 +16,7 @@ atexit.register(onexit)
 cascade_file_root = "haarcascades"
 parts = [{
             "part": "right_eye",
-            "cascade_file": "haarcascade_eye.xml"},
+            "cascade_file": "haarcascade_righteye_2splits.xml"},
          {
              "part": "left_eye",
              "cascade_file": "haarcascade_lefteye_2splits.xml"}
