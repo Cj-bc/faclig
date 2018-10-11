@@ -2,6 +2,7 @@
 #
 # copyright (c) 2018 Cj-bc
 #
+# @(#) ver.0.2.0
 
 
 # draw <picture> at <x>, <y>
@@ -41,6 +42,26 @@ Draw::erase() {
     seq -s ' ' $width | tr -d "[:digit:]" # echo ' ' for $width length
   done
 }
+
+# Erase whole area of the <picture> from <x> <y>
+# @param <int x> <int y> <string file>
+Draw::erasePicture(){
+  local -i pos_x=$1
+  local -i pos_y=$2
+  local file=$3
+
+  tput civis
+  tput cup $pos_y $pos_x
+  local -i i=1
+  while read -r line; do
+    seq -s ' ' $(echo -E "$line" | wc -m) | tr -d "[:digit:]"
+    tput cup $(( $pos_y + $i)) $pos_x
+    i+=1
+  done < $file
+
+  tput cnorm
+}
+
 
 # clear whole screen
 Draw::clearScreen() {
