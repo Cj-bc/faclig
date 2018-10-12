@@ -8,12 +8,18 @@ import shutil
 import os
 import atexit
 
+
 def onexit():
     os.system('bash ./onexit.sh')
+
 
 atexit.register(onexit)
 
 cascade_file_root = "haarcascades"
+face = {
+        "part": "face",
+        "cascade_file": "haarcascade_frontalface_default.xml"
+       }
 parts = [{
             "part": "right_eye",
             "cascade_file": "haarcascade_righteye_2splits.xml"},
@@ -34,6 +40,8 @@ if __name__ == '__main__':
     DEVICE_ID = 0
 
     # add cascade object to each dict in parts
+    face.update({"cascade":
+                 cv2.CascadeClassifier(f'{cascade_file_root}/{face["cascade_file"]}')})
     [part.update({"cascade":
                  cv2.CascadeClassifier(f'{cascade_file_root}/{part["cascade_file"]}')})
      for part in parts]
@@ -49,17 +57,29 @@ if __name__ == '__main__':
         img = c_frame
         img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-        for  part in parts:
-            face_list = part['cascade'].detectMultiScale(img_gray, minSize=(100, 100))
+        face_list = face['cascade'].detectMultiScale(img_gray, minSize=(100, 100))
 
-            # x: left > right
-            # y: bottom > top
-            for (x, y, w, h) in face_list:
-                term_pos_x = int(round(x / width * TERM_SIZE.columns))
-                term_pos_y = int(round(y / height * TERM_SIZE.lines))
+        # if there's face, try to detect other parts on that area
+        if len(face_list) != 0:
+            # for each detected face, try. (MULTI FACE ISN'T SUPPORTED YET)
+            for face_x, face_y, face_w, face_h in face_list:
 
-                os.system(f'bash ./draw.sh {term_pos_x} {term_pos_y} {part["part"]}')
-                time.sleep(0.5)
+                for part in parts:
+                    part_pos = part['cascade'].detectMultiScale(img_gray, minSize=(100, 100))
+
+                    # x: left > right
+                    # y: bottom > top
+                    for (x, y, w, h) in part_pos:
+
+                        if face_x < x < (face_x + face_w) and \
+                                face_y < y < (face_y + face_h):
+                            term_pos_x = int(round(x / width * TERM_SIZE.columns))
+                            term_pos_y = int(round(y / height * TERM_SIZE.lines))
+                            os.system(f'bash ./draw.sh {term_pos_x} {term_pos_y} {part["part"]}')
+                        else:
+                            print('out of face!!!')
+        time.sleep(0.5)
+
         key = cv2.waitKey(INTERVAL)
         if key == ESC_KEY:
             break
