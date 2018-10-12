@@ -2,7 +2,7 @@
 #
 # copyright (c) 2018 Cj-bc
 #
-# @(#) ver.0.2.0
+# @(#) ver.0.2.3
 
 
 # draw <picture> at <x>, <y>
@@ -53,8 +53,9 @@ Draw::erasePicture(){
   tput civis
   tput cup $pos_y $pos_x
   local -i i=1
-  while read -r line; do
-    seq -s ' ' $(echo -E "$line" | wc -m) | tr -d "[:digit:]"
+
+  while IFS= read -r line; do
+    seq -s ' ' $(echo -En "$line" | wc-m) | tr -d "[:digit:]"
     tput cup $(( $pos_y + $i)) $pos_x
     i+=1
   done < $file
