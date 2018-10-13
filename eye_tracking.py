@@ -29,7 +29,10 @@ face = {
 #          ]
 parts = [{
             "part": "glasses",
-            "cascade_file": "haarcascade_eye_tree_eyeglasses.xml"}
+            "cascade_file": "haarcascade_eye_tree_eyeglasses.xml"},
+         {
+            "part": "mouth",
+            "cascade_file": "haarcascade_mcs_mouth.xml"}
          ]
 
 
