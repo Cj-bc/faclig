@@ -91,6 +91,9 @@ if __name__ == '__main__':
                             cv2.rectangle(img_gray, (x, y), (w, h), color, thickness=pen_w)
                         else:
                             print('out of face!!!')
+        else:
+            print('no face found')
+
         time.sleep(0.5)
         cv2.imshow(MASKED_WINDOW_NAME, img_gray)
 
