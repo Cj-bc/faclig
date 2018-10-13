@@ -43,6 +43,7 @@ if __name__ == '__main__':
     FRAME_RATE = 30
     TERM_SIZE = shutil.get_terminal_size()
 
+    MASKED_WINDOW_NAME = "masked"
 
     DEVICE_ID = 0
 
@@ -58,6 +59,7 @@ if __name__ == '__main__':
     end_flag, c_frame = cap.read()
     height, width, channels = c_frame.shape
 
+    cv2.namedWindow(MASKED_WINDOW_NAME)
 
     while end_flag == True:
 
@@ -70,6 +72,7 @@ if __name__ == '__main__':
         if len(face_list) != 0:
             # for each detected face, try. (MULTI FACE ISN'T SUPPORTED YET)
             for face_x, face_y, face_w, face_h in face_list:
+                cv2.rectangle(img_gray, (face_x, face_y), (face_w, face_h), (256, 0, 0), thickness=3)
 
                 for part in parts:
                     part_pos = part['cascade'].detectMultiScale(img_gray, minSize=(100, 100))
@@ -83,9 +86,13 @@ if __name__ == '__main__':
                             term_pos_x = int(round(x / width * TERM_SIZE.columns))
                             term_pos_y = int(round(y / height * TERM_SIZE.lines))
                             os.system(f'bash ./draw.sh {term_pos_x} {term_pos_y} {part["part"]}')
+                            color = (0, 0, 256)
+                            pen_w = 3
+                            cv2.rectangle(img_gray, (x, y), (w, h), color, thickness=pen_w)
                         else:
                             print('out of face!!!')
         time.sleep(0.5)
+        cv2.imshow(MASKED_WINDOW_NAME, img_gray)
 
         key = cv2.waitKey(INTERVAL)
         if key == ESC_KEY:
