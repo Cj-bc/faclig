@@ -20,12 +20,16 @@ face = {
         "part": "face",
         "cascade_file": "haarcascade_frontalface_default.xml"
        }
+# parts = [{
+#             "part": "right_eye",
+#             "cascade_file": "haarcascade_righteye_2splits.xml"},
+#          {
+#              "part": "left_eye",
+#              "cascade_file": "haarcascade_lefteye_2splits.xml"}
+#          ]
 parts = [{
-            "part": "right_eye",
-            "cascade_file": "haarcascade_righteye_2splits.xml"},
-         {
-             "part": "left_eye",
-             "cascade_file": "haarcascade_lefteye_2splits.xml"}
+            "part": "glasses",
+            "cascade_file": "haarcascade_eye_tree_eyeglasses.xml"}
          ]
 
 
