@@ -35,6 +35,17 @@ parts = [{
             "cascade_file": "haarcascade_mcs_mouth.xml"}
          ]
 
+# def get_eye_pos(color_frame, ):
+#         img = color_frame
+#         img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+#         face_list = cascade.detectMultiScale(img_gray, minSize=(100, 100))
+#
+#         # x: left > right
+#         # y: bottom > top
+#         for (x, y, w, h) in face_list:
+#             x_percent = round(x / width * 100)
+#             y_percent = round(y / height * 100)
+#             print(f'x:{x_percent}, y:{y_percent}')
 
 
 if __name__ == '__main__':
@@ -43,6 +54,7 @@ if __name__ == '__main__':
     FRAME_RATE = 30
     TERM_SIZE = shutil.get_terminal_size()
 
+    # ORG_WINDOW_NAME = "org"
     MASKED_WINDOW_NAME = "masked"
 
     DEVICE_ID = 0
@@ -59,6 +71,7 @@ if __name__ == '__main__':
     end_flag, c_frame = cap.read()
     height, width, channels = c_frame.shape
 
+    # cv2.namedWindow(ORG_WINDOW_NAME)
     cv2.namedWindow(MASKED_WINDOW_NAME)
 
     while end_flag == True:
@@ -74,27 +87,26 @@ if __name__ == '__main__':
             for face_x, face_y, face_w, face_h in face_list:
                 cv2.rectangle(img_gray, (face_x, face_y), (face_w, face_h), (256, 0, 0), thickness=3)
 
+                img_face = img_gray[face_x: face_x + face_w,
+                                    face_y: face_y + face_h]
+
                 for part in parts:
-                    part_pos = part['cascade'].detectMultiScale(img_gray, minSize=(100, 100))
+                    part_pos = part['cascade'].detectMultiScale(img_face, minSize=(100, 100))
 
                     # x: left > right
                     # y: bottom > top
                     for (x, y, w, h) in part_pos:
-
-                        if face_x < x < (face_x + face_w) and \
-                                face_y < y < (face_y + face_h):
-                            term_pos_x = int(round(x / width * TERM_SIZE.columns))
-                            term_pos_y = int(round(y / height * TERM_SIZE.lines))
-                            os.system(f'bash ./draw.sh {term_pos_x} {term_pos_y} {part["part"]}')
-                            color = (0, 0, 256)
-                            pen_w = 3
-                            cv2.rectangle(img_gray, (x, y), (w, h), color, thickness=pen_w)
-                        else:
-                            print('out of face!!!')
+                        term_pos_x = int(round((face_x + x) / width * TERM_SIZE.columns))
+                        term_pos_y = int(round((face_y + y) / height * TERM_SIZE.lines))
+                        os.system(f'bash ./draw.sh {term_pos_x} {term_pos_y} {part["part"]}')
+                        color = (0, 0, 256)
+                        pen_w = 3
+                        cv2.rectangle(img_gray, (x, y), (w, h), color, thickness=pen_w)
         else:
             print('no face found')
 
         time.sleep(0.5)
+        # cv2.imshow(ORG_WINDOW_NAME, c_frame)
         cv2.imshow(MASKED_WINDOW_NAME, img_gray)
 
         key = cv2.waitKey(INTERVAL)

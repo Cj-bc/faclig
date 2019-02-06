@@ -6,7 +6,7 @@
 source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/deps/bin/libdraw"
 
 declare -r asset_root="src"
-declare -Ar asset=([right_eye]="right_eye.txt" [left_eye]="left_eye.txt" [mouth]="mouth.txt" [glasses]="glasses.txt")
+declare -Ar asset=([right_eye]="right_eye.txt" [left_eye]="left_eye.txt" [mouth]="mouth.txt" [glasses]="glasses.txt" [smile]="smile.txt")
 
 
 x=$1
