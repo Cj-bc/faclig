@@ -12,8 +12,10 @@ import Brick
 import Brick.Widgets.Border (border)
 import Brick.Extensions.Shgif.Widgets (shgif, canvas)
 import Brick.Extensions.Shgif.Events (TickEvent(..), mainWithTick)
-import Shgif.Type (Shgif, getShgif, updateShgifNoLoop, updateShgif, updateShgifReversedNoLoop
-                  , updateShgifTo, shgifToCanvas, width, height)
+import Shgif.Type (Shgif,  shgifToCanvas, width, height)
+import Shgif.Loader (fromFile)
+import Shgif.Updater (updateShgifNoLoop, updateShgif, updateShgifReversedNoLoop
+                     , updateShgifTo,)
 import Tart.Canvas
 
 helpText = unlines ["faclig -- prototype program to do live2d like animation with shgif"
@@ -267,13 +269,13 @@ main = do
     when (arg /= [] && (head arg == "--help" || head arg == "-h")) $ putStrLn helpText >> exitSuccess
 
     -- Load resources
-    e_hair <- getShgif "resources/shgif/hair.yaml"
-    e_contour <- getShgif "resources/shgif/contour.yaml"
-    e_leftEye <- getShgif "resources/shgif/leftEye.yaml"
-    e_rightEye <- getShgif "resources/shgif/rightEye.yaml"
-    e_nose <- getShgif "resources/shgif/nose.yaml"
-    e_mouth <- getShgif "resources/shgif/mouth.yaml"
-    e_backHair <- getShgif "resources/shgif/hair_back.yaml"
+    e_hair <- fromFile "resources/shgif/hair.yaml"
+    e_contour <- fromFile "resources/shgif/contour.yaml"
+    e_leftEye <- fromFile "resources/shgif/leftEye.yaml"
+    e_rightEye <- fromFile "resources/shgif/rightEye.yaml"
+    e_nose <- fromFile "resources/shgif/nose.yaml"
+    e_mouth <- fromFile "resources/shgif/mouth.yaml"
+    e_backHair <- fromFile "resources/shgif/hair_back.yaml"
 
     -- validate if all resources are loaded correctly
     let fromLeft (Left e) = e

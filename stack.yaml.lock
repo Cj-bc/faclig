@@ -19,19 +19,19 @@ packages:
   original:
     hackage: tart-0.1.2@sha256:f2c3352fc634b55b905eeb33a8104193e8108cfb812ce4cc9ca22fd701cbb313,3225
 - completed:
-    size: 4453842
-    url: https://github.com/Cj-bc/brick-shgif/archive/f697bf5c95c053564322f9144e3427b204f6906e.tar.gz
+    size: 4456121
+    url: https://github.com/Cj-bc/brick-shgif/archive/4088625c93318e4220d5fb57b6252fd0ce3da680.tar.gz
     cabal-file:
-      size: 1966
-      sha256: 5737cea51fb5c7f9e807f6abdc4a1ceba1bd7a61ab738ccdad910f3d68a24f2f
+      size: 2043
+      sha256: 63151a5f44046cfc16ba83dbde1b3b3c0f539ef4e767abb1ad9cd3f4333e65f2
     name: brick-shgif
-    version: 1.3.0.0
-    sha256: 4f376e9a33e6bf504f363b84dc11d1bb460de5f37bdf7aae2e45be563ab4bf57
+    version: 1.4.0.1
+    sha256: ccbf83cdb3060d5e12319621f08e48129ff2a4bb6b41ed0d783277651ad5c594
     pantry-tree:
-      size: 1663
-      sha256: 677ec14ab487a36b25313f41871db9d275ce173aef03714b89869e4f67bc6661
+      size: 2125
+      sha256: 6e3582d1d25c4163c6db893262f59ddd95a195993ee3b15fe87f204f40bd5e33
   original:
-    url: https://github.com/Cj-bc/brick-shgif/archive/f697bf5c95c053564322f9144e3427b204f6906e.tar.gz
+    url: https://github.com/Cj-bc/brick-shgif/archive/4088625c93318e4220d5fb57b6252fd0ce3da680.tar.gz
 snapshots:
 - completed:
     size: 524799
