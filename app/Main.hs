@@ -124,60 +124,25 @@ ui s = [ canvas [(s^.currentCanvas)]
 -- * 'o' : Look front
 eHandler :: AppState -> BrickEvent name CustomEvent -> EventM Name (Next AppState)
 eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'q') [])) = halt s
-eHandler s (AppEvent (GetFaceData d)) = continue . set rightEyeSize  (d^.right_eye_percent)
-                                                 . set leftEyeSize   (d^.left_eye_percent)
-                                                 . set mouthWSize    (d^.mouth_width_percent)
-                                                 . set mouthHSize    (d^.mouth_height_percent)
-                                                 . set faceXRotation (d^.face_x_radian)
-                                                 . set faceYRotation (d^.face_y_radian)
-                                                 . set faceZRotation (d^.face_z_radian)
-                                                 $ s
-eHandler s (AppEvent Tick) = continue =<< liftIO (do
-                                                  nf <- newFace
-                                                  nc <- updateCanvas
-                                                  let updateOffset = if ((s^.tick) `mod` 10) == 0
-                                                                       then calculateOffset
-                                                                       else id
-                                                  return . over tick (+1)
-                                                         . updateOffset
-                                                         . set face nf
-                                                         . set currentCanvas nc
-                                                         $ s
-                                                 )
-      where
-        updateTick = over tick (+1)
-        f = s^.face
-        partUpdate partLens condLens = case s^.condLens of
-                                       Closing -> updateShgifNoLoop         $ f^.partLens
-                                       Opening -> updateShgifReversedNoLoop $ f^.partLens
-                                       _       -> return $ f^.partLens
-        newFace = Face <$> (updateShgif $ f^.contour)
-                       <*> (updateShgifTo (s^.leftEyeSize)  $ f^.leftEye)
-                       <*> (updateShgifTo (s^.rightEyeSize) $ f^.rightEye)
-                       <*> (updateShgif $ f^.nose)
-                       <*> (updateShgifTo (s^.mouthHSize) $ f^.mouth) -- TODO: apply mouthWSize
-                       <*> (updateShgif $ f^.hair)
-                       <*> (updateShgif $ f^.backHair)
-        calculateOffset = case (s^.faceLooking) of
-                            Nothing -> calculateOffset' (0, 0) (0, 0) (0, 0) (0, 0) (0, 0)
-                            Just R  -> calculateOffset' (-1, 0) (-2, 0) (-1, 0) (0, 0) (-1, 0)
-                            Just L  -> calculateOffset' (2, 0) (1, 0) (1, 0) (0, 0) (1, 0)
-        calculateOffset' a b c d e = over rightEyeOffset  (_moveOffsetTo a)
-                                     . over leftEyeOffset (_moveOffsetTo b)
-                                     . over mouthOffset   (_moveOffsetTo c)
-                                     . over hairOffset    (_moveOffsetTo d)
-                                     . over noseOffset    (_moveOffsetTo e)
-        addOffset (a, b) (c, d) = (a + c, b + d)
-        updateCanvas = mergeToBigCanvas [ (f^.hair    , (5, 0)   `addOffset` (s^.hairOffset))
-                                        , (f^.rightEye, (13, 15) `addOffset` (s^.rightEyeOffset))
-                                        , (f^.leftEye , (29, 15) `addOffset` (s^.leftEyeOffset))
-                                        , (f^.nose    , (25, 20) `addOffset` (s^.noseOffset))
-                                        , (f^.mouth   , (22, 24) `addOffset` (s^.mouthOffset))
-                                        , ((f^.contour), (0, 0))
-                                        , (f^.backHair, (4, 0))
-                                        ]
-
-
+eHandler s (AppEvent (GetFaceData d)) = do
+            -- TODO: Use mouth_width_percent, face_x_radian, face_y_radian, face_z_radian
+            let f = s^.face
+            newFace <- liftIO $ Face <$> (updateShgif $ f^.contour)
+                                     <*> (updateShgifTo (d^.left_eye_percent)  $ f^.leftEye)
+                                     <*> (updateShgifTo (d^.right_eye_percent) $ f^.rightEye)
+                                     <*> (updateShgif $ f^.nose)
+                                     <*> (updateShgifTo (d^.mouth_height_percent) $ f^.mouth) -- TODO: apply mouthWSize
+                                     <*> (updateShgif $ f^.hair)
+                                     <*> (updateShgif $ f^.backHair)
+            newCanvas <- liftIO $ mergeToBigCanvas [ (f^.hair    , (5, 0))
+                                                   , (f^.rightEye, (13, 15))
+                                                   , (f^.leftEye , (29, 15))
+                                                   , (f^.nose    , (25, 20))
+                                                   , (f^.mouth   , (22, 24))
+                                                   , (f^.contour , (0, 0))
+                                                   , (f^.backHair, (4, 0))
+                                                   ]
+            continue . set face newFace . set currentCanvas newCanvas $ s
 eHandler s _ = continue s
 
 _moveOffsetTo :: (Int, Int) -> (Int, Int) -> (Int, Int)
