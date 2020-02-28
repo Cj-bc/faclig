@@ -151,33 +151,11 @@ eHandler s (AppEvent Tick) = continue =<< liftIO (do
                                        Closing -> updateShgifNoLoop         $ f^.partLens
                                        Opening -> updateShgifReversedNoLoop $ f^.partLens
                                        _       -> return $ f^.partLens
-
-        eyeRTick = case s^.rightEyeState of
-                     Opening -> 40
-                     Opened  -> 40
-                     Closing -> 70
-                     Closed  -> 70
-                     Emote1  -> 0
-                     Emote2  -> 90
-        eyeLTick = case s^.leftEyeState of
-                     Opening -> 40
-                     Opened  -> 40
-                     Closing -> 70
-                     Closed  -> 70
-                     Emote1  -> 0
-                     Emote2  -> 90
-        mouthTick = case s^.mouthState of
-                     Opening -> 0
-                     Opened  -> 0
-                     Closing -> 50
-                     Closed  -> 50
-                     Emote1  -> 60
-                     Emote2  -> 60
         newFace = Face <$> (updateShgif $ f^.contour)
-                       <*> (updateShgifTo eyeLTick $ f^.leftEye)
-                       <*> (updateShgifTo eyeRTick $ f^.rightEye)
+                       <*> (updateShgifTo (s^.leftEyeSize)  $ f^.leftEye)
+                       <*> (updateShgifTo (s^.rightEyeSize) $ f^.rightEye)
                        <*> (updateShgif $ f^.nose)
-                       <*> (updateShgifTo mouthTick $ f^.mouth)
+                       <*> (updateShgifTo (s^.mouthHSize) $ f^.mouth) -- TODO: apply mouthWSize
                        <*> (updateShgif $ f^.hair)
                        <*> (updateShgif $ f^.backHair)
         calculateOffset = case (s^.faceLooking) of
@@ -200,24 +178,6 @@ eHandler s (AppEvent Tick) = continue =<< liftIO (do
                                         ]
 
 
-eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'w') [])) = continue $ s&rightEyeState.~Opening
-eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 's') [])) = continue $ s&rightEyeState.~Closing
-eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'x') [])) = continue $ s&rightEyeState.~Emote1
-eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'r') [])) = continue $ s&rightEyeState.~Emote2
-eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'e') [])) = continue $ s&leftEyeState.~Opening
-eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'd') [])) = continue $ s&leftEyeState.~Closing
-eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'c') [])) = continue $ s&leftEyeState.~Emote1
-eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'f') [])) = continue $ s&leftEyeState.~Emote2
-eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'm') [])) = continue $ s&mouthState.~ Closing
-eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'n') [])) = continue $ s&mouthState.~ Opening
-eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'b') [])) = continue $ s&mouthState.~ Emote1
-eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'l') [])) = continue $ s&faceLooking.~(Just L)
-eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'h') [])) = continue $ s&faceLooking.~(Just R)
-eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'o') [])) = continue $ s&faceLooking.~Nothing
--- eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'n') [])) = continue $ s&rightEyeOffset.~ (0, 0)
---                                                                    &leftEyeOffset.~ (0, 0)
---                                                                    &mouthOffset.~ (0, 0)
---                                                                    &hairOffset.~ (0, 0)
 eHandler s _ = continue s
 
 _moveOffsetTo :: (Int, Int) -> (Int, Int) -> (Int, Int)
