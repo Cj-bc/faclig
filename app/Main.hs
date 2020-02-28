@@ -1,8 +1,9 @@
 {-# LANGUAGE TemplateHaskell #-}
 module Main where
 
+import Control.Concurrent (forkIO, threadDelay)
 import Control.Lens (makeLenses, (^.), (&), (.~), over, set)
-import Control.Monad (when, forM_)
+import Control.Monad (when, forM_, forever, void)
 import Control.Monad.IO.Class (liftIO)
 import System.Exit (exitFailure, exitSuccess)
 import System.Environment (getArgs)
@@ -10,13 +11,14 @@ import Data.Either (isLeft)
 import qualified Graphics.Vty as Vty
 import Brick
 import Brick.Widgets.Border (border)
+import Brick.BChan
 import Brick.Extensions.Shgif.Widgets (shgif, canvas)
-import Brick.Extensions.Shgif.Events (TickEvent(..), mainWithTick)
 import Shgif.Type (Shgif,  shgifToCanvas, width, height)
 import Shgif.Loader (fromFile)
 import Shgif.Updater (updateShgifNoLoop, updateShgif, updateShgifReversedNoLoop
                      , updateShgifTo,)
 import FaceDataServer
+import FaceDataServer.Connection (getFaceData)
 import Tart.Canvas
 import Network.Multicast (multicastReceiver)
 
