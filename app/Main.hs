@@ -289,8 +289,7 @@ main = do
 
     emptyCanvas <- newCanvas (1, 1)
 
-    let initialState = AppState face  Opened Opened Opened
-                                                 (0,0) (0,0) (0,0) (0, 0) (0, 0) Nothing 0
+    let initialState = AppState face 0 0 0 0 0.0 0.0 0.0 (0,0) (0,0) (0,0) (0, 0) (0, 0) 0
                                                  emptyCanvas
         buildVty = Vty.mkVty Vty.defaultConfig
     void $ customMain buildVty (Just chan) app initialState
