@@ -118,7 +118,7 @@ ui s = [ canvas [(s^.currentCanvas)]
 -- * 'h' : Look right
 --
 -- * 'o' : Look front
-eHandler :: AppState -> BrickEvent name TickEvent -> EventM Name (Next AppState)
+eHandler :: AppState -> BrickEvent name CustomEvent -> EventM Name (Next AppState)
 eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'q') [])) = halt s
 eHandler s (AppEvent Tick) = continue =<< liftIO (do
                                                   nf <- newFace
@@ -321,5 +321,5 @@ main = do
                                                  (0,0) (0,0) (0,0) (0, 0) (0, 0) Nothing 0
                                                  emptyCanvas
         buildVty = Vty.mkVty Vty.defaultConfig
-    void $ CustomEvent buildVty (Just chan) app initialState
+    void $ customMain buildVty (Just chan) app initialState
     return ()
