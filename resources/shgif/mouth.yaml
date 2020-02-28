@@ -7,16 +7,19 @@ data:
   - timestamp: 0
     contents: |-
       anchor
-      _______
-      \     /
-       '---'
-  - timestamp: 50
+
+         O
+
+  - timestamp: 100
     contents: |-
       anchor
 
       `====='
-  - timestamp: 60
+
+  - timestamp: 150
     contents: |-
       anchor
+      _______
+      \     /
+       '---'
 
-         O

@@ -7,43 +7,29 @@ data:
   - timestamp: 0
     contents: |-
       anchor
-        _____
-      ./     \.
-      ''  /\
-       \  \/ _
 
+
+      '_-------`
   - timestamp: 10
     contents: |-
       anchor
-        _____
-      ./     \.
-      ''  /\
-       \  \/ _
+
+
+      ,==___==.
 
   - timestamp: 20
     contents: |-
       anchor
-         ____
-       ,"    ".
-      ''  r\
-       \  \/ _
+
+
+      ,=---=.
 
   - timestamp: 30
     contents: |-
       anchor
-          __
-       ,-"  "-.
-      ''  r"\
-       \  \o/_
 
-
-  - timestamp: 40
-    contents: |-
-      anchor
-
-       .------.
-      ''  r"\
-       \  \o/_
+         ___
+      ,="   "=.
 
   - timestamp: 50
     contents: |-
@@ -53,31 +39,44 @@ data:
       ''  |"|
        \  ----
 
-  - timestamp: 60
+  - timestamp: 100
     contents: |-
       anchor
 
+       .------.
+      ''  r"\
+       \  \o/_
 
-      '_-------`
-  - timestamp: 70
+  - timestamp: 120
     contents: |-
       anchor
+          __
+       ,-"  "-.
+      ''  r"\
+       \  \o/_
 
-
-      ,==___==.
-
-  - timestamp: 80
+  - timestamp: 130
     contents: |-
       anchor
+         ____
+       ,"    ".
+      ''  r\
+       \  \/ _
 
-
-      ,=---=.
-
-  - timestamp: 90
+  - timestamp: 140
     contents: |-
       anchor
+        _____
+      ./     \.
+      ''  /\
+       \  \/ _
 
-         ___
-      ,="   "=.
+  - timestamp: 150
+    contents: |-
+      anchor
+        _____
+      ./     \.
+      ''  /\
+       \  \/ _
 
 
