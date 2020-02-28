@@ -138,11 +138,11 @@ eHandler s (AppEvent Tick) = continue =<< liftIO (do
                                                   let updateOffset = if ((s^.tick) `mod` 10) == 0
                                                                        then calculateOffset
                                                                        else id
-                                                  return $ over tick (+1)
-                                                         $ updateOffset
-                                                         $ set face nf
-                                                         $ set currentCanvas nc
-                                                         s
+                                                  return . over tick (+1)
+                                                         . updateOffset
+                                                         . set face nf
+                                                         . set currentCanvas nc
+                                                         $ s
                                                  )
       where
         updateTick = over tick (+1)
