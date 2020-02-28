@@ -18,6 +18,7 @@ import Shgif.Loader (fromFile)
 import Shgif.Updater (updateShgifNoLoop, updateShgif, updateShgifReversedNoLoop
                      , updateShgifTo,)
 import FaceDataServer
+import FaceDataServer.Types
 import FaceDataServer.Connection (getFaceData)
 import Tart.Canvas
 import Network.Multicast (multicastReceiver)
@@ -65,15 +66,18 @@ data PartState = Opened  -- ^ The part is opened
                 deriving (Eq)
 
 data AppState = AppState { _face :: Face
-                         , _rightEyeState :: PartState
-                         , _leftEyeState :: PartState
-                         , _mouthState :: PartState
+                         , _rightEyeSize :: Percent
+                         , _leftEyeSize :: Percent
+                         , _mouthWSize :: Percent
+                         , _mouthHSize :: Percent
+                         , _faceXRotation :: Radian
+                         , _faceYRotation :: Radian
+                         , _faceZRotation :: Radian
                          , _rightEyeOffset :: (Int, Int)
                          , _leftEyeOffset :: (Int, Int)
                          , _mouthOffset :: (Int, Int)
                          , _hairOffset :: (Int, Int)
                          , _noseOffset :: (Int, Int)
-                         , _faceLooking :: Maybe LR
                          , _tick :: Int
                          , _currentCanvas :: Canvas
                          }
@@ -120,6 +124,14 @@ ui s = [ canvas [(s^.currentCanvas)]
 -- * 'o' : Look front
 eHandler :: AppState -> BrickEvent name CustomEvent -> EventM Name (Next AppState)
 eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'q') [])) = halt s
+eHandler s (AppEvent (GetFaceData d)) = continue . set rightEyeSize  (d^.right_eye_percent)
+                                                 . set leftEyeSize   (d^.left_eye_percent)
+                                                 . set mouthWSize    (d^.mouth_width_percent)
+                                                 . set mouthHSize    (d^.mouth_height_percent)
+                                                 . set faceXRotation (d^.face_x_radian)
+                                                 . set faceYRotation (d^.face_y_radian)
+                                                 . set faceZRotation (d^.face_z_radian)
+                                                 $ s
 eHandler s (AppEvent Tick) = continue =<< liftIO (do
                                                   nf <- newFace
                                                   nc <- updateCanvas
