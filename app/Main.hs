@@ -308,11 +308,11 @@ main = do
     -- Thread to receive FaceData
     forkIO $ forever $ do
         facedata <- getFaceData s
-        writeBChan chan
+        writeBChan chan $ GetFaceData facedata
 
     -- Thread to generate Tick Event
     forkIO $ forever $ do
-        writeBChan eventChan TickEvent
+        writeBChan chan Tick
         threadDelay 1000 -- wait 1 ms
 
     emptyCanvas <- newCanvas (1, 1)
