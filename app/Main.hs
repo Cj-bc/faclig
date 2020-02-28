@@ -16,7 +16,12 @@ import Shgif.Type (Shgif,  shgifToCanvas, width, height)
 import Shgif.Loader (fromFile)
 import Shgif.Updater (updateShgifNoLoop, updateShgif, updateShgifReversedNoLoop
                      , updateShgifTo,)
+import FaceDataServer
 import Tart.Canvas
+import Network.Multicast (multicastReceiver)
+
+multicastGroupAddr = "226.0.0.1"
+portNum = 5032
 
 helpText = unlines ["faclig -- prototype program to do live2d like animation with shgif"
                    , ""
@@ -73,6 +78,9 @@ data AppState = AppState { _face :: Face
 makeLenses ''AppState
 
 data Name = NoName deriving (Eq, Ord)
+
+data CustomEvent = Tick
+                 | GetFaceData FaceData
 -- }}}
 
 -- UI {{{
@@ -254,7 +262,7 @@ mergeToBigCanvas ss = do
 
 
 
-app :: App AppState TickEvent Name
+app :: App AppState CustomEvent Name
 app = App { appDraw         = ui
           , appHandleEvent  = eHandler
           , appStartEvent   = return
@@ -292,8 +300,24 @@ main = do
         (Right hb) = e_backHair
         face       = (Face c le re ns m h hb)
 
+    s <- multicastReceiver multicastGroupAddr portNum
+    chan <- newBChan 10
+
+    -- Thread to receive FaceData
+    forkIO $ forever $ do
+        facedata <- getFaceData s
+        writeBChan chan
+
+    -- Thread to generate Tick Event
+    forkIO $ forever $ do
+        writeBChan eventChan TickEvent
+        threadDelay 1000 -- wait 1 ms
+
     emptyCanvas <- newCanvas (1, 1)
-    lastState <- mainWithTick Nothing 1000 app $ AppState face  Opened Opened Opened
+
+    let initialState = AppState face  Opened Opened Opened
                                                  (0,0) (0,0) (0,0) (0, 0) (0, 0) Nothing 0
                                                  emptyCanvas
+        buildVty = Vty.mkVty Vty.defaultConfig
+    void $ CustomEvent buildVty (Just chan) app initialState
     return ()
