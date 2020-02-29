@@ -246,10 +246,6 @@ main = do
     forkIO $ forever $ do
         facedata <- getFaceData s
         writeBChan chan $ GetFaceData facedata
-
-    -- Thread to generate Tick Event
-    forkIO $ forever $ do
-        writeBChan chan Tick
         threadDelay 1000 -- wait 1 ms
 
     emptyCanvas <- newCanvas (1, 1)
