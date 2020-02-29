@@ -1,8 +1,9 @@
 {-# LANGUAGE TemplateHaskell #-}
 module Main where
 
+import Control.Concurrent (forkIO, threadDelay)
 import Control.Lens (makeLenses, (^.), (&), (.~), over, set)
-import Control.Monad (when, forM_)
+import Control.Monad (when, forM_, forever, void)
 import Control.Monad.IO.Class (liftIO)
 import System.Exit (exitFailure, exitSuccess)
 import System.Environment (getArgs)
@@ -10,13 +11,20 @@ import Data.Either (isLeft)
 import qualified Graphics.Vty as Vty
 import Brick
 import Brick.Widgets.Border (border)
+import Brick.BChan
 import Brick.Extensions.Shgif.Widgets (shgif, canvas)
-import Brick.Extensions.Shgif.Events (TickEvent(..), mainWithTick)
 import Shgif.Type (Shgif,  shgifToCanvas, width, height)
 import Shgif.Loader (fromFile)
 import Shgif.Updater (updateShgifNoLoop, updateShgif, updateShgifReversedNoLoop
                      , updateShgifTo,)
+import FaceDataServer
+import FaceDataServer.Types
+import FaceDataServer.Connection (getFaceData)
 import Tart.Canvas
+import Network.Multicast (multicastReceiver)
+
+multicastGroupAddr = "226.0.0.1"
+portNum = 5032
 
 helpText = unlines ["faclig -- prototype program to do live2d like animation with shgif"
                    , ""
@@ -58,21 +66,27 @@ data PartState = Opened  -- ^ The part is opened
                 deriving (Eq)
 
 data AppState = AppState { _face :: Face
-                         , _rightEyeState :: PartState
-                         , _leftEyeState :: PartState
-                         , _mouthState :: PartState
+                         , _rightEyeSize :: Percent
+                         , _leftEyeSize :: Percent
+                         , _mouthWSize :: Percent
+                         , _mouthHSize :: Percent
+                         , _faceXRotation :: Radian
+                         , _faceYRotation :: Radian
+                         , _faceZRotation :: Radian
                          , _rightEyeOffset :: (Int, Int)
                          , _leftEyeOffset :: (Int, Int)
                          , _mouthOffset :: (Int, Int)
                          , _hairOffset :: (Int, Int)
                          , _noseOffset :: (Int, Int)
-                         , _faceLooking :: Maybe LR
                          , _tick :: Int
                          , _currentCanvas :: Canvas
                          }
 makeLenses ''AppState
 
 data Name = NoName deriving (Eq, Ord)
+
+data CustomEvent = Tick
+                 | GetFaceData FaceData
 -- }}}
 
 -- UI {{{
@@ -108,94 +122,27 @@ ui s = [ canvas [(s^.currentCanvas)]
 -- * 'h' : Look right
 --
 -- * 'o' : Look front
-eHandler :: AppState -> BrickEvent name TickEvent -> EventM Name (Next AppState)
+eHandler :: AppState -> BrickEvent name CustomEvent -> EventM Name (Next AppState)
 eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'q') [])) = halt s
-eHandler s (AppEvent Tick) = continue =<< liftIO (do
-                                                  nf <- newFace
-                                                  nc <- updateCanvas
-                                                  let updateOffset = if ((s^.tick) `mod` 10) == 0
-                                                                       then calculateOffset
-                                                                       else id
-                                                  return $ over tick (+1)
-                                                         $ updateOffset
-                                                         $ set face nf
-                                                         $ set currentCanvas nc
-                                                         s
-                                                 )
-      where
-        updateTick = over tick (+1)
-        f = s^.face
-        partUpdate partLens condLens = case s^.condLens of
-                                       Closing -> updateShgifNoLoop         $ f^.partLens
-                                       Opening -> updateShgifReversedNoLoop $ f^.partLens
-                                       _       -> return $ f^.partLens
-
-        eyeRTick = case s^.rightEyeState of
-                     Opening -> 40
-                     Opened  -> 40
-                     Closing -> 70
-                     Closed  -> 70
-                     Emote1  -> 0
-                     Emote2  -> 90
-        eyeLTick = case s^.leftEyeState of
-                     Opening -> 40
-                     Opened  -> 40
-                     Closing -> 70
-                     Closed  -> 70
-                     Emote1  -> 0
-                     Emote2  -> 90
-        mouthTick = case s^.mouthState of
-                     Opening -> 0
-                     Opened  -> 0
-                     Closing -> 50
-                     Closed  -> 50
-                     Emote1  -> 60
-                     Emote2  -> 60
-        newFace = Face <$> (updateShgif $ f^.contour)
-                       <*> (updateShgifTo eyeLTick $ f^.leftEye)
-                       <*> (updateShgifTo eyeRTick $ f^.rightEye)
-                       <*> (updateShgif $ f^.nose)
-                       <*> (updateShgifTo mouthTick $ f^.mouth)
-                       <*> (updateShgif $ f^.hair)
-                       <*> (updateShgif $ f^.backHair)
-        calculateOffset = case (s^.faceLooking) of
-                            Nothing -> calculateOffset' (0, 0) (0, 0) (0, 0) (0, 0) (0, 0)
-                            Just R  -> calculateOffset' (-1, 0) (-2, 0) (-1, 0) (0, 0) (-1, 0)
-                            Just L  -> calculateOffset' (2, 0) (1, 0) (1, 0) (0, 0) (1, 0)
-        calculateOffset' a b c d e = over rightEyeOffset  (_moveOffsetTo a)
-                                     . over leftEyeOffset (_moveOffsetTo b)
-                                     . over mouthOffset   (_moveOffsetTo c)
-                                     . over hairOffset    (_moveOffsetTo d)
-                                     . over noseOffset    (_moveOffsetTo e)
-        addOffset (a, b) (c, d) = (a + c, b + d)
-        updateCanvas = mergeToBigCanvas [ (f^.hair    , (5, 0)   `addOffset` (s^.hairOffset))
-                                        , (f^.rightEye, (13, 15) `addOffset` (s^.rightEyeOffset))
-                                        , (f^.leftEye , (29, 15) `addOffset` (s^.leftEyeOffset))
-                                        , (f^.nose    , (25, 20) `addOffset` (s^.noseOffset))
-                                        , (f^.mouth   , (22, 24) `addOffset` (s^.mouthOffset))
-                                        , ((f^.contour), (0, 0))
-                                        , (f^.backHair, (4, 0))
-                                        ]
-
-
-eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'w') [])) = continue $ s&rightEyeState.~Opening
-eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 's') [])) = continue $ s&rightEyeState.~Closing
-eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'x') [])) = continue $ s&rightEyeState.~Emote1
-eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'r') [])) = continue $ s&rightEyeState.~Emote2
-eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'e') [])) = continue $ s&leftEyeState.~Opening
-eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'd') [])) = continue $ s&leftEyeState.~Closing
-eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'c') [])) = continue $ s&leftEyeState.~Emote1
-eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'f') [])) = continue $ s&leftEyeState.~Emote2
-eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'm') [])) = continue $ s&mouthState.~ Closing
-eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'n') [])) = continue $ s&mouthState.~ Opening
-eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'b') [])) = continue $ s&mouthState.~ Emote1
-eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'l') [])) = continue $ s&faceLooking.~(Just L)
-eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'h') [])) = continue $ s&faceLooking.~(Just R)
-eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'o') [])) = continue $ s&faceLooking.~Nothing
--- eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'n') [])) = continue $ s&rightEyeOffset.~ (0, 0)
---                                                                    &leftEyeOffset.~ (0, 0)
---                                                                    &mouthOffset.~ (0, 0)
---                                                                    &hairOffset.~ (0, 0)
+eHandler s (AppEvent (GetFaceData d)) = do
+            -- TODO: Use mouth_width_percent, face_x_radian, face_y_radian, face_z_radian
+            let f = s^.face
+            newFace <- liftIO $ Face <$> (updateShgif $ f^.contour)
+                                     <*> (updateShgifTo (d^.left_eye_percent)  $ f^.leftEye)
+                                     <*> (updateShgifTo (d^.right_eye_percent) $ f^.rightEye)
+                                     <*> (updateShgif $ f^.nose)
+                                     <*> (updateShgifTo (d^.mouth_height_percent) $ f^.mouth) -- TODO: apply mouthWSize
+                                     <*> (updateShgif $ f^.hair)
+                                     <*> (updateShgif $ f^.backHair)
+            newCanvas <- liftIO $ mergeToBigCanvas [ (f^.hair    , (5, 0))
+                                                   , (f^.rightEye, (13, 15))
+                                                   , (f^.leftEye , (29, 15))
+                                                   , (f^.nose    , (25, 20))
+                                                   , (f^.mouth   , (22, 24))
+                                                   , (f^.contour , (0, 0))
+                                                   , (f^.backHair, (4, 0))
+                                                   ]
+            continue . set face newFace . set currentCanvas newCanvas $ s
 eHandler s _ = continue s
 
 _moveOffsetTo :: (Int, Int) -> (Int, Int) -> (Int, Int)
@@ -254,7 +201,7 @@ mergeToBigCanvas ss = do
 
 
 
-app :: App AppState TickEvent Name
+app :: App AppState CustomEvent Name
 app = App { appDraw         = ui
           , appHandleEvent  = eHandler
           , appStartEvent   = return
@@ -292,8 +239,19 @@ main = do
         (Right hb) = e_backHair
         face       = (Face c le re ns m h hb)
 
+    s <- multicastReceiver multicastGroupAddr portNum
+    chan <- newBChan 10
+
+    -- Thread to receive FaceData
+    forkIO $ forever $ do
+        facedata <- getFaceData s
+        writeBChan chan $ GetFaceData facedata
+        threadDelay 1000 -- wait 1 ms
+
     emptyCanvas <- newCanvas (1, 1)
-    lastState <- mainWithTick Nothing 1000 app $ AppState face  Opened Opened Opened
-                                                 (0,0) (0,0) (0,0) (0, 0) (0, 0) Nothing 0
+
+    let initialState = AppState face 0 0 0 0 0.0 0.0 0.0 (0,0) (0,0) (0,0) (0, 0) (0, 0) 0
                                                  emptyCanvas
+        buildVty = Vty.mkVty Vty.defaultConfig
+    void $ customMain buildVty (Just chan) app initialState
     return ()
