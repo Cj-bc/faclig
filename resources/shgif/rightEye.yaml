@@ -7,27 +7,20 @@ data:
   - timestamp: 0
     contents: |-
       anchor
-
-
       '_-------`
   - timestamp: 10
     contents: |-
       anchor
-
-
       ,==___==.
 
   - timestamp: 20
     contents: |-
       anchor
-
-
       ,=---=.
 
   - timestamp: 30
     contents: |-
       anchor
-
          ___
       ,="   "=.
 

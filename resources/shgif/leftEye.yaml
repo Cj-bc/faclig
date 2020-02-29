@@ -9,52 +9,98 @@ data:
     contents: |-
       anchor
 
-      '------''
 
-
+       .-------'
   - timestamp: 10
     contents: |-
       anchor
 
-      .==___==,
 
+       .--===--'
   - timestamp: 20
     contents: |-
       anchor
 
-      .=---=,
 
+       .======='
   - timestamp: 30
     contents: |-
       anchor
 
-         ___
-      .="   "=,
-
+         _____
+       .=_____='
   - timestamp: 50
     contents: |-
       anchor
 
-      _______.
-      ' |"|  ''
-        ---- /
+         _---_
+       '=_____='
+  - timestamp: 60
+    contents: |-
+      anchor
 
+        ,-----.
+       '._____.'
+  - timestamp: 70
+    contents: |-
+      anchor
 
+        .-----.
+       '._   _ '
+          `-`
+  - timestamp: 80
+    contents: |-
+      anchor
+
+        .-----.
+       ' r. \ ''
+        `-----'
+  - timestamp: 90
+    contents: |-
+      anchor
+
+        .-----.
+       ' r""\ ''
+        _\o_/_'
   - timestamp: 100
     contents: |-
       anchor
 
-      ,------.
-        r"\  ''
-       _\o/  /
-
-
+       ,------.
+      ;  r""\ ''
+        _\o_/ /
+  - timestamp: 120
+    contents: |-
+      anchor
+          __
+       .-"  "-.
+      ;  r""\ ''
+       _ \o_/ /
+  - timestamp: 130
+    contents: |-
+      anchor
+         ____
+       ."    ".
+      ;   r\  ''
+        _ \/  /
+  - timestamp: 140
+    contents: |-
+      anchor
+         ____
+       ./    \.
+      ;   /\  ''
+        _ \/  /
   - timestamp: 150
     contents: |-
       anchor
-        _____
-      ,/     \.
-         /\  ''
-       _ \/  /
-
-
+         _____
+       ,/     \.
+      ;   /\  ''
+        _ \/  /
+  - timestamp: 160
+    contents: |-
+      anchor
+         _____
+       ,/     \.
+      ;   /\  ''
+        _ \/  /
