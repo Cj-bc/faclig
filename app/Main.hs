@@ -92,7 +92,7 @@ data CustomEvent = Tick
 -- UI {{{
 -- | Render face
 ui :: AppState -> [Widget Name]
-ui s = [ canvas [(s^.currentCanvas)]
+ui s = [ canvas [s^.currentCanvas]
        ]
 -- }}}
 
@@ -226,8 +226,8 @@ main = do
 
     -- validate if all resources are loaded correctly
     let fromLeft (Left e) = e
-    flip mapM_ [e_hair, e_contour, e_leftEye, e_rightEye, e_nose, e_mouth, e_backHair] $ \e ->
-        when (isLeft e) $ putStrLn (show $ fromLeft e) >> exitFailure
+    forM_ [e_hair, e_contour, e_leftEye, e_rightEye, e_nose, e_mouth, e_backHair] $ \e ->
+        when (isLeft e) $ print (fromLeft e) >> exitFailure
 
     -- Unpack Either and construct face
     let (Right c)  = e_contour
@@ -254,4 +254,3 @@ main = do
                                                  emptyCanvas
         buildVty = Vty.mkVty Vty.defaultConfig
     void $ customMain buildVty (Just chan) app initialState
-    return ()
