@@ -16,7 +16,7 @@ import Brick.Extensions.Shgif.Widgets (shgif, canvas)
 import Shgif.Type (Shgif,  shgifToCanvas, width, height)
 import Shgif.Loader (fromFile)
 import Shgif.Updater (updateShgifNoLoop, updateShgif, updateShgifReversedNoLoop
-                     , updateShgifTo,)
+                     , setShgifTickTo)
 import FaceDataServer
 import FaceDataServer.Types
 import FaceDataServer.Connection (getFaceData)
@@ -127,13 +127,13 @@ eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'q') [])) = halt s
 eHandler s (AppEvent (GetFaceData d)) = do
             -- TODO: Use mouth_width_percent, face_x_radian, face_y_radian, face_z_radian
             let f = s^.face
-            newFace <- liftIO $ Face <$> (updateShgif $ f^.contour)
-                                     <*> (updateShgifTo (d^.left_eye_percent)  $ f^.leftEye)
-                                     <*> (updateShgifTo (d^.right_eye_percent) $ f^.rightEye)
-                                     <*> (updateShgif $ f^.nose)
-                                     <*> (updateShgifTo (d^.mouth_height_percent) $ f^.mouth) -- TODO: apply mouthWSize
-                                     <*> (updateShgif $ f^.hair)
-                                     <*> (updateShgif $ f^.backHair)
+            newFace <- liftIO $ Face <$> updateShgif (f^.contour)
+                                     <*> setShgifTickTo (d^.left_eye_percent)  (f^.leftEye)
+                                     <*> setShgifTickTo (d^.right_eye_percent) (f^.rightEye)
+                                     <*> updateShgif (f^.nose)
+                                     <*> setShgifTickTo (d^.mouth_height_percent) (f^.mouth) -- TODO: apply mouthWSize
+                                     <*> updateShgif (f^.hair)
+                                     <*> updateShgif (f^.backHair)
             newCanvas <- liftIO $ mergeToBigCanvas [ (f^.hair    , (5, 0))
                                                    , (f^.rightEye, (13, 15))
                                                    , (f^.leftEye , (29, 15))

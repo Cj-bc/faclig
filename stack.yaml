@@ -43,9 +43,9 @@ extra-deps:
   - brick-0.46@sha256:78629a4da6b759c78ec264bedc9e794edeb55a302d17015d0278620eef4ebe29,13852
   - tart-0.1.2@sha256:f2c3352fc634b55b905eeb33a8104193e8108cfb812ce4cc9ca22fd701cbb313,3225
   - github: Cj-bc/brick-shgif
-    commit: 4088625c93318e4220d5fb57b6252fd0ce3da680
+    commit: 8d46e92eddc2ab0cecf9b40251cf8961d31e3933
   - github: Cj-bc/FaceDataServer-hs
-    commit: fb62ad63173abaeb4a844dfd17b20f32320d7c15
+    commit: cd41e778a3a89b398c753a2fa57f947863b3f5b1
 
 
 # Override default flag values for local packages and extra-deps
