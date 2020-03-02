@@ -33,19 +33,19 @@ packages:
   original:
     url: https://github.com/Cj-bc/brick-shgif/archive/4088625c93318e4220d5fb57b6252fd0ce3da680.tar.gz
 - completed:
-    size: 4663
-    url: https://github.com/Cj-bc/FaceDataServer-hs/archive/0fd2256d38d17d8095e5db3480bc441ed18249d1.tar.gz
+    size: 4731
+    url: https://github.com/Cj-bc/FaceDataServer-hs/archive/fb62ad63173abaeb4a844dfd17b20f32320d7c15.tar.gz
     cabal-file:
       size: 1120
       sha256: c598513cff2e3c68e0b572911ccd9283ef40affec25e34b0c7e0bb0224cf0e13
     name: FaceDataServer-hs
     version: 0.1.0.0
-    sha256: ddc6d4521ae2c94bb062e9b78fc9c886759b97e3eb930aecd83f177b4c995b5d
+    sha256: 46297e954cdfc86a4888fac870ef094e233262471f9660b00e234065aa17c9c8
     pantry-tree:
       size: 605
-      sha256: af03e396cd8a0cc40603dcdd1460f6f950fe828c36f490b536782270cdfcbf3e
+      sha256: 1ac1755ba2903cf7f92523f98d4544f46bf9a299062ba8865d7259ab534d17c1
   original:
-    url: https://github.com/Cj-bc/FaceDataServer-hs/archive/0fd2256d38d17d8095e5db3480bc441ed18249d1.tar.gz
+    url: https://github.com/Cj-bc/FaceDataServer-hs/archive/fb62ad63173abaeb4a844dfd17b20f32320d7c15.tar.gz
 snapshots:
 - completed:
     size: 524799

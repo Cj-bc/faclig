@@ -45,7 +45,7 @@ extra-deps:
   - github: Cj-bc/brick-shgif
     commit: 4088625c93318e4220d5fb57b6252fd0ce3da680
   - github: Cj-bc/FaceDataServer-hs
-    commit: 0fd2256d38d17d8095e5db3480bc441ed18249d1
+    commit: fb62ad63173abaeb4a844dfd17b20f32320d7c15
 
 
 # Override default flag values for local packages and extra-deps
