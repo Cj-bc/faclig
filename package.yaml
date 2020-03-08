@@ -28,6 +28,7 @@ dependencies:
 - tart
 - network-multicast
 - FaceDataServer-hs
+- time
 
 executables:
   faclig:

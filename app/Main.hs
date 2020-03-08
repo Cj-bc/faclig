@@ -10,6 +10,7 @@ import System.Environment (getArgs)
 import Data.Either (isLeft)
 import qualified Graphics.Vty as Vty
 import Brick
+import Brick.Types (Location)
 import Brick.Widgets.Border (border)
 import Brick.BChan
 import Brick.Extensions.Shgif.Widgets (shgif, canvas)
@@ -22,6 +23,7 @@ import FaceDataServer.Types
 import FaceDataServer.Connection (getFaceData)
 import Tart.Canvas
 import Network.Multicast (multicastReceiver)
+import Data.Time.Clock (getCurrentTime, UTCTime, diffUTCTime)
 
 helpText = unlines ["faclig -- prototype program to do live2d like animation with shgif"
                    , ""
@@ -62,6 +64,14 @@ data PartState = Opened  -- ^ The part is opened
                | Emote2
                 deriving (Eq)
 
+data DebugInfo = DebugInfo { _lastFrameArrivedTime :: UTCTime
+                           , _fps :: Int
+                           }
+makeLenses ''DebugInfo
+
+emptyDebugInfo = DebugInfo <$> getCurrentTime
+                           <*> pure 0
+
 data AppState = AppState { _face :: Face
                          , _rightEyeSize :: Percent
                          , _leftEyeSize :: Percent
@@ -77,6 +87,7 @@ data AppState = AppState { _face :: Face
                          , _noseOffset :: (Int, Int)
                          , _tick :: Int
                          , _currentCanvas :: Canvas
+                         , _debugInfo :: Maybe DebugInfo
                          }
 makeLenses ''AppState
 
@@ -89,8 +100,13 @@ data CustomEvent = Tick
 -- UI {{{
 -- | Render face
 ui :: AppState -> [Widget Name]
-ui s = [ canvas [s^.currentCanvas]
+ui s = [ translateBy (Location (50, 0)) . debugUI $ s^.debugInfo
+       , canvas [s^.currentCanvas]
        ]
+
+debugUI :: Maybe DebugInfo -> Widget Name
+debugUI Nothing  = emptyWidget
+debugUI (Just i) = border . str $ "FPS: " ++ show (i^.fps)
 -- }}}
 
 -- event handler {{{
@@ -115,7 +131,30 @@ eHandler s (AppEvent (GetFaceData d)) = do
                                                    , (f^.contour , (0, 0))
                                                    , (f^.backHair, (4, 0))
                                                    ]
-            continue . set face newFace . set currentCanvas newCanvas $ s
+            debugInfo' <- updateDebugInfo (s^.debugInfo)
+            continue . set face newFace
+                     . set currentCanvas newCanvas
+                     . set debugInfo debugInfo'
+                     $ s
+    where
+        -- | Update Debug Information if it required
+        updateDebugInfo :: Maybe DebugInfo -> EventM Name (Maybe DebugInfo)
+        updateDebugInfo Nothing  = return Nothing
+        updateDebugInfo (Just i) = do
+            currentTime <- liftIO getCurrentTime
+            let diffSec = diffUTCTime currentTime (i^.lastFrameArrivedTime)
+                c_fps   = round $ 1 / diffSec
+
+            return . Just . set lastFrameArrivedTime currentTime
+                          . set fps c_fps
+                          $ i
+
+
+eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'i') [])) = case s^.debugInfo of
+                                                        Nothing -> do
+                                                            di <- liftIO emptyDebugInfo
+                                                            continue $ set debugInfo (Just di) s
+                                                        Just _ -> continue $ set debugInfo Nothing s
 eHandler s _ = continue s
 
 _moveOffsetTo :: (Int, Int) -> (Int, Int) -> (Int, Int)
@@ -224,6 +263,6 @@ main = do
     emptyCanvas <- newCanvas (1, 1)
 
     let initialState = AppState face 0 0 0 0 0.0 0.0 0.0 (0,0) (0,0) (0,0) (0, 0) (0, 0) 0
-                                                 emptyCanvas
+                                                 emptyCanvas Nothing
         buildVty = Vty.mkVty Vty.defaultConfig
     void $ customMain buildVty (Just chan) app initialState
