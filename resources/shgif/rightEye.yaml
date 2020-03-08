@@ -3,28 +3,53 @@ author: Cj-bc
 format: Page
 width: 9
 height: 5
+version: 1.0.0
 data:
   - timestamp: 0
     contents: |-
       anchor
-      '_-------`
-  - timestamp: 10
-    contents: |-
-      anchor
-      ,==___==.
 
-  - timestamp: 20
-    contents: |-
-      anchor
-      ,=---=.
 
-  - timestamp: 30
+      ,-------.
+  - timestamp: 35
     contents: |-
       anchor
-         ___
-      ,="   "=.
+
+
+      ,-------.
+  - timestamp: 40
+    contents: |-
+      anchor
+
+
+      ,--===--.
 
   - timestamp: 50
+    contents: |-
+      anchor
+
+
+      ,-=====-.
+  - timestamp: 55
+    contents: |-
+      anchor
+
+
+      ,=======.
+  - timestamp: 60
+    contents: |-
+      anchor
+
+         ___
+      ,='   `=.
+  - timestamp: 65
+    contents: |-
+      anchor
+
+         ___
+      ,-`   `-.
+
+  - timestamp: 70
     contents: |-
       anchor
 
@@ -40,7 +65,7 @@ data:
       ''  r"\
        \  \o/_
 
-  - timestamp: 120
+  - timestamp: 103
     contents: |-
       anchor
           __
@@ -48,7 +73,7 @@ data:
       ''  r"\
        \  \o/_
 
-  - timestamp: 130
+  - timestamp: 105
     contents: |-
       anchor
          ____
@@ -56,7 +81,7 @@ data:
       ''  r\
        \  \/ _
 
-  - timestamp: 140
+  - timestamp: 110
     contents: |-
       anchor
         _____

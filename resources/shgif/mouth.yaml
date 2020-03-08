@@ -8,18 +8,15 @@ data:
     contents: |-
       anchor
 
-         O
-
+      `====='
   - timestamp: 100
     contents: |-
       anchor
 
       `====='
-
-  - timestamp: 150
+  - timestamp: 130
     contents: |-
       anchor
       _______
       \     /
        '---'
-

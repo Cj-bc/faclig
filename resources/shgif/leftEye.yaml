@@ -3,94 +3,112 @@ author: Cj-bc
 format: Page
 width: 9
 height: 5
+version: 1.0.0
 data:
-
   - timestamp: 0
     contents: |-
       anchor
 
 
-       .-------'
-  - timestamp: 10
+      .-------'
+  - timestamp: 35
     contents: |-
       anchor
 
 
-       .--===--'
-  - timestamp: 20
+      .-------'
+  - timestamp: 40
     contents: |-
       anchor
 
 
-       .======='
-  - timestamp: 30
-    contents: |-
-      anchor
-
-         _____
-       .=_____='
+      .--===--'
   - timestamp: 50
     contents: |-
       anchor
 
-         _---_
-       '=_____='
+
+      .-=====-'
+  - timestamp: 55
+    contents: |-
+      anchor
+
+
+      .======='
   - timestamp: 60
     contents: |-
       anchor
 
-        ,-----.
-       '._____.'
-  - timestamp: 70
+         ___
+      .='   `='
+  - timestamp: 65
     contents: |-
       anchor
 
-        .-----.
-       '._   _ '
-          `-`
-  - timestamp: 80
+         ___
+      .-'   `-'
+
+  - timestamp: 75
     contents: |-
       anchor
 
-        .-----.
-       ' r. \ ''
-        `-----'
-  - timestamp: 90
+        _---_
+      'T/g   T'
+  - timestamp: 76
     contents: |-
       anchor
 
-        .-----.
-       ' r""\ ''
-        _\o_/_'
+       ,-----.
+      ' .n.   '
+  - timestamp: 77
+    contents: |-
+      anchor
+
+       .-----.
+      ' r.\   '
+  - timestamp: 78
+    contents: |-
+      anchor
+
+       .-----.
+      ' r.\  ''
+  - timestamp: 79
+    contents: |-
+      anchor
+
+       .-----.
+      ' r"\  ''
+       _\o/ _'
   - timestamp: 100
     contents: |-
       anchor
 
        ,------.
-      ;  r""\ ''
-        _\o_/ /
-  - timestamp: 120
+      ;  r"\  ''
+        _\o/  /
+
+  - timestamp: 103
     contents: |-
       anchor
           __
        .-"  "-.
-      ;  r""\ ''
-       _ \o_/ /
-  - timestamp: 130
+      ;  r"\  ''
+       _ \o/  /
+  - timestamp: 105
     contents: |-
       anchor
          ____
        ."    ".
       ;   r\  ''
         _ \/  /
-  - timestamp: 140
+  - timestamp: 108
     contents: |-
       anchor
          ____
        ./    \.
       ;   /\  ''
         _ \/  /
-  - timestamp: 150
+  - timestamp: 110
     contents: |-
       anchor
          _____
