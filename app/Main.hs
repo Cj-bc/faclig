@@ -95,30 +95,6 @@ ui s = [ canvas [s^.currentCanvas]
 
 -- event handler {{{
 -- | event handler
---
--- key bindings:
---
--- * 'q' : quit the app
---
--- * 'w' : Open right eye
---
--- * 's' : Close right eye
---
--- * 'x' : Open right eye wide
---
--- * 'e' : Open left eye
---
--- * 'd' : Close left eye
---
--- * 'c' : Open left eye wide
---
--- * 'm' : Open/Close mouth
---
--- * 'l' : Look left
---
--- * 'h' : Look right
---
--- * 'o' : Look front
 eHandler :: AppState -> BrickEvent name CustomEvent -> EventM Name (Next AppState)
 eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'q') [])) = halt s
 eHandler s (AppEvent (GetFaceData d)) = do
