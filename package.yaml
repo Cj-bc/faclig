@@ -29,9 +29,6 @@ dependencies:
 - network-multicast
 - FaceDataServer-hs
 
-library:
-  source-dirs: src
-
 executables:
   faclig:
     main:                Main.hs
@@ -40,16 +37,3 @@ executables:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
-    dependencies:
-    - faclig
-
-tests:
-  faclig-test:
-    main:                Spec.hs
-    source-dirs:         test
-    ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
-    dependencies:
-    - faclig
