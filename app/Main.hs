@@ -23,9 +23,6 @@ import FaceDataServer.Connection (getFaceData)
 import Tart.Canvas
 import Network.Multicast (multicastReceiver)
 
-multicastGroupAddr = "226.0.0.1"
-portNum = 5032
-
 helpText = unlines ["faclig -- prototype program to do live2d like animation with shgif"
                    , ""
                    , "Key control:"
@@ -239,7 +236,7 @@ main = do
         (Right hb) = e_backHair
         face       = (Face c le re ns m h hb)
 
-    s <- multicastReceiver multicastGroupAddr portNum
+    s <- multicastReceiver defaultGroupAddr defaultPortNumber
     chan <- newBChan 10
 
     -- Thread to receive FaceData
