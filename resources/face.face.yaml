@@ -1,0 +1,24 @@
+name: <model name>
+author: Cj.BC_SD a.k.a Cj-bc
+parts:
+  contour:
+    path: "contour.yaml"
+    offset: [0, 0]
+  leftEye:
+    path: "leftEye.yaml"
+    offset: [29, 15]
+  rightEye:
+    path: "rightEye.yaml"
+    offset: [13, 15]
+  nose:
+    path: "nose.yaml"
+    offset: [25, 20]
+  mouth:
+    path: "mouth.yaml"
+    offset: [22, 24]
+  hair:
+    path: "hair.yaml"
+    offset: [5, 0]
+  backHair:
+    path: "hair_back.yaml"
+    offset: [4, 0]
