@@ -8,19 +8,20 @@ import Control.Lens (makeLenses, (^.), _1, set)
 import Shgif.Type (Shgif,  shgifToCanvas, width, height)
 import Data.Yaml
 import Data.HashMap.Lazy ((!))
+import Graphics.Asciiart.Faclig.Types.Internal
 import Tart.Canvas
 
 
 
 -- | A 'Face' represents one face AA model.
 --
-data Face = Face { _contour :: Shgif  -- ^ Contour. Basement of face
-                 , _leftEye :: Shgif  -- ^ This is on the right side on the screen.
-                 , _rightEye :: Shgif -- ^ This is on the left side on the screen.
-                 , _nose  :: Shgif
-                 , _mouth :: Shgif
-                 , _hair :: Shgif
-                 , _backHair :: Shgif
+data Face = Face { _contour :: Part  -- ^ Contour. Basement of face
+                 , _leftEye :: Part  -- ^ This is on the right side on the screen.
+                 , _rightEye :: Part -- ^ This is on the left side on the screen.
+                 , _nose  :: Part
+                 , _mouth :: Part
+                 , _hair :: Part
+                 , _backHair :: Part
                  }
 makeLenses ''Face
 
