@@ -30,14 +30,15 @@ makeLenses ''FaceFile
 
 
 instance FromJSON FaceFile where
-    parseJSON = withObject "Face" $ \v ->
-                    FaceFile <$> parsePart (v ! "contour")
-                             <*> parsePart (v ! "leftEye")
-                             <*> parsePart (v ! "rightEye")
-                             <*> parsePart (v ! "nose")
-                             <*> parsePart (v ! "mouth")
-                             <*> parsePart (v ! "hair")
-                             <*> parsePart (v ! "backHair")
+    parseJSON = withObject "Face" $ \v -> do
+                    parts <- v .: "parts" :: Parser Object
+                    FaceFile <$> parsePart (parts ! "contour")
+                             <*> parsePart (parts ! "leftEye")
+                             <*> parsePart (parts ! "rightEye")
+                             <*> parsePart (parts ! "nose")
+                             <*> parsePart (parts ! "mouth")
+                             <*> parsePart (parts ! "hair")
+                             <*> parsePart (parts ! "backHair")
 
 parsePart :: Value -> Parser UnloadedPart
 parsePart = withObject "Part" $ \v -> (,) <$> v .: "path"
