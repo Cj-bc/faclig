@@ -47,3 +47,4 @@ executables:
     - -with-rtsopts=-N
     dependencies:
       - faclig
+      - optparse-applicative

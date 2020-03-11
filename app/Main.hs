@@ -25,12 +25,19 @@ import Tart.Canvas
 import Network.Multicast (multicastReceiver)
 import Data.Time.Clock (getCurrentTime, UTCTime, diffUTCTime)
 import Graphics.Asciiart.Faclig.Types
+import qualified Options.Applicative as OPT
 
-helpText = unlines ["faclig -- prototype program to do live2d like animation with shgif"
-                   , ""
-                   , "Key control:"
-                   , "    q: quit program"
-                   ]
+
+-- option parsers {{{
+type Args = FilePath
+
+args :: OPT.Parser Args
+args = OPT.argument OPT.str $ OPT.metavar "FACLIG_FILE"
+
+opts :: OPT.ParserInfo Args
+opts = OPT.info (args OPT.<**> OPT.helper)
+        (OPT.fullDesc <> OPT.progDesc "FDS frontend for ASCII ART")
+-- }}}
 
 -- data types {{{
 data DebugInfo = DebugInfo { _lastFrameArrivedTime :: UTCTime
@@ -77,6 +84,7 @@ debugUI :: Maybe DebugInfo -> Widget Name
 debugUI Nothing  = emptyWidget
 debugUI (Just i) = border . str $ "FPS: " ++ show (i^.fps)
 -- }}}
+
 
 -- event handler {{{
 -- | event handler
@@ -132,12 +140,10 @@ app = App { appDraw         = ui
 
 main :: IO ()
 main = do
-    -- help message
-    arg <- getArgs
-    when (arg /= [] && (head arg == "--help" || head arg == "-h")) $ putStrLn helpText >> exitSuccess
+    arg <- OPT.execParser opts
 
-    -- Load resources
-    face <- load "resources/face.face.yaml"
+    -- Load face
+    face <- load arg
 
     case face of
         Left e -> print e >> exitFailure
