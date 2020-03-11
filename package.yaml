@@ -29,6 +29,8 @@ dependencies:
 - network-multicast
 - FaceDataServer-hs
 - time
+- unordered-containers
+- yaml
 
 library:
   source-dirs: src
