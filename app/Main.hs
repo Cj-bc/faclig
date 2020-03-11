@@ -46,24 +46,8 @@ data Face = Face { _contour :: Shgif
                  , _backHair :: Shgif
                  }
 makeLenses ''Face
-data LR = L | R
-data FacialExpression = Normal
-                      | ClosingEye LR
-                      | OpeningEye LR
-                      | ClosingEyes
-                      | OpeningEyes
-                      | ClosingMouth
-                      | OpeningMouth
 
--- | A data type that represent facial Parts state
-data PartState = Opened  -- ^ The part is opened
-               | Closed  -- ^ The part is closed
-               | Opening -- ^ The part is opening
-               | Closing -- ^ The part is closing
-               | Emote1
-               | Emote2
-                deriving (Eq)
-
+-- data types {{{
 data DebugInfo = DebugInfo { _lastFrameArrivedTime :: UTCTime
                            , _fps :: Int
                            }
