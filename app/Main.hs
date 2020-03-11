@@ -24,6 +24,7 @@ import FaceDataServer.Connection (getFaceData)
 import Tart.Canvas
 import Network.Multicast (multicastReceiver)
 import Data.Time.Clock (getCurrentTime, UTCTime, diffUTCTime)
+import Graphics.Asciiart.Faclig.Types
 
 helpText = unlines ["faclig -- prototype program to do live2d like animation with shgif"
                    , ""
@@ -84,21 +85,15 @@ eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'q') [])) = halt s
 eHandler s (AppEvent (GetFaceData d)) = do
             -- TODO: Use mouth_width_percent, face_x_radian, face_y_radian, face_z_radian
             let f = s^.face
-            newFace <- liftIO $ Face <$> updateShgif (f^.contour)
-                                     <*> setShgifTickTo (d^.left_eye_percent)  (f^.leftEye)
-                                     <*> setShgifTickTo (d^.right_eye_percent) (f^.rightEye)
-                                     <*> updateShgif (f^.nose)
-                                     <*> setShgifTickTo (d^.mouth_height_percent) (f^.mouth) -- TODO: apply mouthWSize
-                                     <*> updateShgif (f^.hair)
-                                     <*> updateShgif (f^.backHair)
-            newCanvas <- liftIO $ mergeToBigCanvas [ (f^.hair    , (5, 0))
-                                                   , (f^.rightEye, (13, 15))
-                                                   , (f^.leftEye , (29, 15))
-                                                   , (f^.nose    , (25, 20))
-                                                   , (f^.mouth   , (22, 24))
-                                                   , (f^.contour , (0, 0))
-                                                   , (f^.backHair, (4, 0))
-                                                   ]
+            newFace <- liftIO $ updateFace updateShgif
+                                           (setShgifTickTo $ d^.left_eye_percent)
+                                           (setShgifTickTo $ d^.right_eye_percent)
+                                           updateShgif
+                                           (setShgifTickTo $ d^.mouth_height_percent)  -- TODO: apply mouthWSize
+                                           updateShgif
+                                           updateShgif
+                                           f
+            newCanvas <- liftIO $ toCanvas f
             debugInfo' <- updateDebugInfo (s^.debugInfo)
             continue . set face newFace
                      . set currentCanvas newCanvas
@@ -142,41 +137,23 @@ main = do
     when (arg /= [] && (head arg == "--help" || head arg == "-h")) $ putStrLn helpText >> exitSuccess
 
     -- Load resources
-    e_hair <- fromFile "resources/shgif/hair.yaml"
-    e_contour <- fromFile "resources/shgif/contour.yaml"
-    e_leftEye <- fromFile "resources/shgif/leftEye.yaml"
-    e_rightEye <- fromFile "resources/shgif/rightEye.yaml"
-    e_nose <- fromFile "resources/shgif/nose.yaml"
-    e_mouth <- fromFile "resources/shgif/mouth.yaml"
-    e_backHair <- fromFile "resources/shgif/hair_back.yaml"
+    face <- load "resources/face.face.yaml"
 
-    -- validate if all resources are loaded correctly
-    let fromLeft (Left e) = e
-    forM_ [e_hair, e_contour, e_leftEye, e_rightEye, e_nose, e_mouth, e_backHair] $ \e ->
-        when (isLeft e) $ print (fromLeft e) >> exitFailure
+    case face of
+        Left e -> print e >> exitFailure
+        Right f' -> do
+            s <- multicastReceiver defaultGroupAddr defaultPortNumber
+            chan <- newBChan 10
 
-    -- Unpack Either and construct face
-    let (Right c)  = e_contour
-        (Right le) = e_leftEye
-        (Right re) = e_rightEye
-        (Right ns) = e_nose
-        (Right m)  = e_mouth
-        (Right h)  = e_hair
-        (Right hb) = e_backHair
-        face       = (Face c le re ns m h hb)
+            -- Thread to receive FaceData
+            forkIO $ forever $ do
+                facedata <- getFaceData s
+                writeBChan chan $ GetFaceData facedata
+                threadDelay 1000 -- wait 1 ms
 
-    s <- multicastReceiver defaultGroupAddr defaultPortNumber
-    chan <- newBChan 10
+            emptyCanvas <- newCanvas (1, 1)
 
-    -- Thread to receive FaceData
-    forkIO $ forever $ do
-        facedata <- getFaceData s
-        writeBChan chan $ GetFaceData facedata
-        threadDelay 1000 -- wait 1 ms
-
-    emptyCanvas <- newCanvas (1, 1)
-
-    let initialState = AppState face 0 0 0 0 0.0 0.0 0.0 (0,0) (0,0) (0,0) (0, 0) (0, 0) 0
-                                                 emptyCanvas Nothing
-        buildVty = Vty.mkVty Vty.defaultConfig
-    void $ customMain buildVty (Just chan) app initialState
+            let initialState = AppState f' 0 0 0 0 0.0 0.0 0.0 (0,0) (0,0) (0,0) (0, 0) (0, 0) 0
+                                                         emptyCanvas Nothing
+                buildVty = Vty.mkVty Vty.defaultConfig
+            void $ customMain buildVty (Just chan) app initialState
