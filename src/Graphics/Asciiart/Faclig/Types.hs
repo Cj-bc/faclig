@@ -13,6 +13,8 @@ import Data.Yaml
 import Data.HashMap.Lazy ((!))
 import Graphics.Asciiart.Faclig.Types.Internal
 import Tart.Canvas
+import System.FilePath.Posix (takeDirectory)
+import System.Directory (withCurrentDirectory)
 
 
 
@@ -38,20 +40,21 @@ load fp = do
     case res of
         Left e -> return $ Left e
         Right f -> do
-            cont <- loadPart $ f^.fContour
-            le   <- loadPart $ f^.fLeftEye
-            re   <- loadPart $ f^.fRightEye
-            n    <- loadPart $ f^.fNose
-            m    <- loadPart $ f^.fMouth
-            h    <- loadPart $ f^.fHair
-            bh   <- loadPart $ f^.fBackHair
-            return $ Face <$> cont
-                          <*> le
-                          <*> re
-                          <*> n
-                          <*> m
-                          <*> h
-                          <*> bh
+            withCurrentDirectory (takeDirectory fp) $ do
+                cont <- loadPart $ f^.fContour
+                le   <- loadPart $ f^.fLeftEye
+                re   <- loadPart $ f^.fRightEye
+                n    <- loadPart $ f^.fNose
+                m    <- loadPart $ f^.fMouth
+                h    <- loadPart $ f^.fHair
+                bh   <- loadPart $ f^.fBackHair
+                return $ Face <$> cont
+                              <*> le
+                              <*> re
+                              <*> n
+                              <*> m
+                              <*> h
+                              <*> bh
 
 
 -- | Load 'Shgif.Types.Shgif' for 'Part' and return 'Part'
