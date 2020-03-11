@@ -30,6 +30,9 @@ dependencies:
 - FaceDataServer-hs
 - time
 
+library:
+  source-dirs: src
+
 executables:
   faclig:
     main:                Main.hs
@@ -38,3 +41,5 @@ executables:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
+    dependencies:
+      - faclig

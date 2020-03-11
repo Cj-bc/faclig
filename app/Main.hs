@@ -32,17 +32,6 @@ helpText = unlines ["faclig -- prototype program to do live2d like animation wit
                    ]
 
 -- data types {{{
-data Face = Face { _contour :: Shgif
-                 , _leftEye :: Shgif
-                 , _rightEye :: Shgif
-                 , _nose  :: Shgif
-                 , _mouth :: Shgif
-                 , _hair :: Shgif
-                 , _backHair :: Shgif
-                 }
-makeLenses ''Face
-
--- data types {{{
 data DebugInfo = DebugInfo { _lastFrameArrivedTime :: UTCTime
                            , _fps :: Int
                            }
@@ -135,61 +124,7 @@ eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'i') [])) = case s^.debugInfo of
                                                             continue $ set debugInfo (Just di) s
                                                         Just _ -> continue $ set debugInfo Nothing s
 eHandler s _ = continue s
-
-_moveOffsetTo :: (Int, Int) -> (Int, Int) -> (Int, Int)
-_moveOffsetTo limit@(x1, y1) current@(x2, y2) | current == limit = current
-                                              | x1 == x2         = updateY current
-                                              | y1 == y2         = updateX current
-                                              | otherwise        = updateX $ updateY current
-    where
-        updateX (tx, ty) = if x2 < x1
-                             then (tx + 1, ty)
-                             else (tx - 1, ty)
-        updateY (tx, ty) = if y2 < y1
-                             then (tx, ty + 1)
-                             else (tx, ty - 1)
 -- }}}
-
--- Utilities for Canvas {{{
-
--- | Render Canvas into other canvas
-plotToCanvas :: (Int, Int) -> Canvas -> Canvas -> IO Canvas
-plotToCanvas (dw, dh) bc c = do
-    let (w, h) = canvasSize c
-    write [(w', h') | w' <- [0..w-1], h' <- [0..h-1]] bc
-    where
-        write :: [(Int, Int)] -> Canvas -> IO Canvas
-        write [] bc'         = return bc'
-        write ((w, h):x) bc' = do
-            let (ch, attr) = canvasGetPixel c (w, h)
-            case ch of
-                ' ' -> write x bc
-                _   -> do
-                  newC <- canvasSetPixel bc (w + dw, h + dh) ch attr
-                  write x newC
-
-
--- | Merge and render all Shgifs into one Canvas
-mergeToBigCanvas :: [(Shgif, (Int, Int))] -> IO Canvas
-mergeToBigCanvas ss = do
-    emptyCanvas <- newCanvas (w, h)
-    write ss emptyCanvas
-    where
-        w = maximum $ fmap (\(s, (w',_)) -> s^.width + w') ss
-        h = maximum $ fmap (\(s, (_,h')) -> s^.height + h') ss
-
-        -- | Write Canvases one after another
-        write :: [(Shgif, (Int, Int))] -> Canvas -> IO Canvas
-        write [] c         = return c
-        write ((s,p):x) bc = do
-            shgifC <- shgifToCanvas s
-            newC <- plotToCanvas p bc shgifC
-            write x newC
--- }}}
-
-
-
-
 
 
 app :: App AppState CustomEvent Name
