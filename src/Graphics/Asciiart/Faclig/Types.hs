@@ -2,6 +2,9 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Graphics.Asciiart.Faclig.Types
 ( Face(..)
+, load
+, toCanvas
+, updateFace
 ) where
 
 import Control.Lens (makeLenses, (^.), _1, set)
@@ -24,6 +27,77 @@ data Face = Face { _contour :: Part  -- ^ Contour. Basement of face
                  , _backHair :: Part
                  }
 makeLenses ''Face
+
+-- ========== Functions for Face {{{
+
+
+-- | Load 'Face' from 'FilePath'
+load :: FilePath -> IO (Either ParseException Face)
+load fp = do
+    res <- decodeFileEither fp :: IO (Either ParseException FaceFile)
+    case res of
+        Left e -> return $ Left e
+        Right f -> do
+            cont <- loadPart $ f^.fContour
+            le   <- loadPart $ f^.fLeftEye
+            re   <- loadPart $ f^.fRightEye
+            n    <- loadPart $ f^.fNose
+            m    <- loadPart $ f^.fMouth
+            h    <- loadPart $ f^.fHair
+            bh   <- loadPart $ f^.fBackHair
+            return $ Face <$> cont
+                          <*> le
+                          <*> re
+                          <*> n
+                          <*> m
+                          <*> h
+                          <*> bh
+
+
+-- | Load 'Shgif.Types.Shgif' for 'Part' and return 'Part'
+loadPart :: UnloadedPart -> IO (Either ParseException Part)
+loadPart (fn, o) = do
+    res <- decodeFileEither fn :: IO (Either ParseException Shgif)
+    case res of
+        Left e -> return $ Left e
+        Right p -> return $ Right (p, o)
+
+type Updater = Shgif -> IO Shgif
+
+-- |
+--
+-- TODO: PLEASE FIX THIS TYPE
+updateFace :: Updater -> Updater -> Updater
+                -> Updater -> Updater -> Updater
+                -> Updater -> Face -> IO Face
+updateFace c le re n m hi bh f = do
+    new_c <- c  $ f^.contour._1
+    new_l <- le $ f^.leftEye._1
+    new_r <- re $ f^.rightEye._1
+    new_n <- n  $ f^.nose._1
+    new_m <- m  $ f^.mouth._1 -- TODO: apply mouthWSize
+    new_h <- hi $ f^.hair._1
+    new_b <- bh $ f^.backHair._1
+    return . set (contour._1)  new_c
+           . set (leftEye._1)  new_l
+           . set (rightEye._1) new_r
+           . set (nose._1)     new_n
+           . set (mouth._1)    new_m
+           . set (hair._1)     new_h
+           . set (backHair._1) new_b
+           $ f
+
+
+-- | Convert current 'Face' into Canvas
+toCanvas :: Face -> IO Canvas
+toCanvas f = mergeToBigCanvas [ f^.hair
+                              , f^.rightEye
+                              , f^.leftEye
+                              , f^.nose
+                              , f^.mouth
+                              , f^.contour
+                              , f^.backHair
+                              ]
 
 
 
