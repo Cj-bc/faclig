@@ -29,11 +29,6 @@ helpText = unlines ["faclig -- prototype program to do live2d like animation wit
                    , ""
                    , "Key control:"
                    , "    q: quit program"
-                   , "    w: switch right eye"
-                   , "    e: switch left eye"
-                   , "    m: switch mouth"
-                   , "    l: look left"
-                   , "    h: look right"
                    ]
 
 -- data types {{{
