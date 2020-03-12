@@ -1,5 +1,6 @@
 name: <model name>
 author: Cj.BC_SD a.k.a Cj-bc
+version: 0.1.0
 parts:
   contour:
     path: "contour.yaml"
