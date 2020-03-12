@@ -51,3 +51,6 @@ executables:
     dependencies:
       - faclig
       - optparse-applicative
+
+
+# vim: nospell
