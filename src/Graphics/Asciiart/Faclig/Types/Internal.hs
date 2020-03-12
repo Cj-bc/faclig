@@ -4,13 +4,20 @@ module Graphics.Asciiart.Faclig.Types.Internal where
 
 
 import Control.Lens (makeLenses, (^.))
-import Control.Monad (when)
+import Control.Monad (when, unless)
 import Shgif.Type (Shgif)
 import Data.Yaml
 import Data.Aeson ((<?>))
 import Data.Aeson.Internal (JSONPathElement(Key))
 import Data.HashMap.Lazy ((!))
+import Data.Version (Version, makeVersion)
 import qualified Data.Vector as V
+import qualified Data.Text as T
+
+currentFacligFormatVersion :: [Int]
+currentFacligFormatVersion = [0, 1, 0]
+
+isComativeVersion supported target = head supported == head target
 
 type Offset = (Int, Int)
 type Part = (Shgif, Offset)
@@ -35,6 +42,14 @@ makeLenses ''FaceFile
 
 instance FromJSON FaceFile where
     parseJSON = withObject "Face" $ \v -> do
+                    -- version validation
+                    version <- parseVersion (v ! "version") <?> Key "version" :: Parser [Int]
+                    unless (isComativeVersion currentFacligFormatVersion version)
+                        $ fail $ unlines ["Imcompatible version"
+                                         , "suported: " ++ show currentFacligFormatVersion
+                                         , "but got: " ++ show version
+                                         ]
+
                     parts <- v .: "parts" <?> Key "parts" :: Parser Object
                     let helper n = parsePart (parts ! n) <?> Key n
 
@@ -46,6 +61,9 @@ instance FromJSON FaceFile where
                              <*> helper "hair"
                              <*> helper "backHair"
 
+parseVersion = withText "" $ \t -> do
+                    let ver = map (read . T.unpack) . T.split (== '.') $ t :: [Int]
+                    return . take 3 $ ver
 
 parsePart :: Value -> Parser UnloadedPart
 parsePart = withObject "Part" $ \v -> (,) <$> v .: "path" <?> Key "path"

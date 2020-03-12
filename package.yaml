@@ -35,6 +35,7 @@ dependencies:
 - filepath
 - vector
 - aeson
+- text
 
 library:
   source-dirs: src
