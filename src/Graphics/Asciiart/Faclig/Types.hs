@@ -39,22 +39,21 @@ load fp = do
     res <- decodeFileEither fp :: IO (Either ParseException FaceFile)
     case res of
         Left e -> return $ Left e
-        Right f -> do
-            withCurrentDirectory (takeDirectory fp) $ do
-                cont <- loadPart $ f^.fContour
-                le   <- loadPart $ f^.fLeftEye
-                re   <- loadPart $ f^.fRightEye
-                n    <- loadPart $ f^.fNose
-                m    <- loadPart $ f^.fMouth
-                h    <- loadPart $ f^.fHair
-                bh   <- loadPart $ f^.fBackHair
-                return $ Face <$> cont
-                              <*> le
-                              <*> re
-                              <*> n
-                              <*> m
-                              <*> h
-                              <*> bh
+        Right f -> withCurrentDirectory (takeDirectory fp) $ do
+                        cont <- loadPart $ f^.fContour
+                        le   <- loadPart $ f^.fLeftEye
+                        re   <- loadPart $ f^.fRightEye
+                        n    <- loadPart $ f^.fNose
+                        m    <- loadPart $ f^.fMouth
+                        h    <- loadPart $ f^.fHair
+                        bh   <- loadPart $ f^.fBackHair
+                        return $ Face <$> cont
+                                      <*> le
+                                      <*> re
+                                      <*> n
+                                      <*> m
+                                      <*> h
+                                      <*> bh
 
 
 -- | Load 'Shgif.Types.Shgif' for 'Part' and return 'Part'
