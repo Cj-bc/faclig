@@ -33,6 +33,8 @@ dependencies:
 - yaml
 - directory
 - filepath
+- vector
+- aeson
 
 library:
   source-dirs: src
