@@ -40,9 +40,17 @@ instance FromJSON FaceFile where
                              <*> parsePart (parts ! "hair")
                              <*> parsePart (parts ! "backHair")
 
+
+
 parsePart :: Value -> Parser UnloadedPart
 parsePart = withObject "Part" $ \v -> (,) <$> v .: "path"
-                                          <*> v .: "offset"
+                                          <*> parseTuple (v ! "offset")
 
-
-
+-- | Parse Yaml's List to tuple '(,)'
+--
+-- First two items are used as value,
+-- and others will be just discarded.
+parseTuple :: Value -> Parser (Int, Int)
+parseTuple = withArray "Offset" $ \v -> do
+                when (V.length v /= 2) $ fail "offset should be exactly [x: Int, y: Int]"
+                (,) <$> parseJSON (v V.! 0) <*> parseJSON (v V.! 1)
