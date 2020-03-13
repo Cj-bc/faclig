@@ -19,19 +19,33 @@ packages:
   original:
     hackage: tart-0.1.2@sha256:f2c3352fc634b55b905eeb33a8104193e8108cfb812ce4cc9ca22fd701cbb313,3225
 - completed:
-    size: 4453842
-    url: https://github.com/Cj-bc/brick-shgif/archive/f697bf5c95c053564322f9144e3427b204f6906e.tar.gz
+    size: 4456635
+    url: https://github.com/Cj-bc/brick-shgif/archive/8d46e92eddc2ab0cecf9b40251cf8961d31e3933.tar.gz
     cabal-file:
-      size: 1966
-      sha256: 5737cea51fb5c7f9e807f6abdc4a1ceba1bd7a61ab738ccdad910f3d68a24f2f
+      size: 2043
+      sha256: 38fa48455c0829ba245f4e109e8194d2e9fa20d2b849568dfb28c4521f015d48
     name: brick-shgif
-    version: 1.3.0.0
-    sha256: 4f376e9a33e6bf504f363b84dc11d1bb460de5f37bdf7aae2e45be563ab4bf57
+    version: 1.4.1.0
+    sha256: 934c82eb83ad4af118ed0cd6b889e8b4e7a2da1d30832931186a83e718cf32cf
     pantry-tree:
-      size: 1663
-      sha256: 677ec14ab487a36b25313f41871db9d275ce173aef03714b89869e4f67bc6661
+      size: 2266
+      sha256: 34a1c9b707f6cdb9d130340e0a5d131e7d27ad7a3116d68b86b88cd07d310460
   original:
-    url: https://github.com/Cj-bc/brick-shgif/archive/f697bf5c95c053564322f9144e3427b204f6906e.tar.gz
+    url: https://github.com/Cj-bc/brick-shgif/archive/8d46e92eddc2ab0cecf9b40251cf8961d31e3933.tar.gz
+- completed:
+    size: 4788
+    url: https://github.com/Cj-bc/FaceDataServer-hs/archive/05784a97972459d6900505cd62368305ba636237.tar.gz
+    cabal-file:
+      size: 1120
+      sha256: c598513cff2e3c68e0b572911ccd9283ef40affec25e34b0c7e0bb0224cf0e13
+    name: FaceDataServer-hs
+    version: 0.1.0.0
+    sha256: 79e228e23f4203c603990151a71e4a8da646e252cff81ec6930b8bed3ab367e1
+    pantry-tree:
+      size: 605
+      sha256: c86c10a5dd7d0224e060a8e5f6f0f8c7bff2302645f09635c42fd3bde571c089
+  original:
+    url: https://github.com/Cj-bc/FaceDataServer-hs/archive/05784a97972459d6900505cd62368305ba636237.tar.gz
 snapshots:
 - completed:
     size: 524799

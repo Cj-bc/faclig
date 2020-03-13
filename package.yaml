@@ -1,5 +1,5 @@
 name:                faclig
-version:             0.0.1.0
+version:             0.1.0.0
 github:              "Cj-bc/faclig"
 license:             BSD3
 author:              "Cj.bc_sd a.k.a Cj-bc"
@@ -26,6 +26,16 @@ dependencies:
 - brick-shgif >= 1.3.0.0
 - lens
 - tart
+- network-multicast
+- FaceDataServer-hs
+- time
+- unordered-containers
+- yaml
+- directory
+- filepath
+- vector
+- aeson
+- text
 
 library:
   source-dirs: src
@@ -39,15 +49,8 @@ executables:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - faclig
+      - faclig
+      - optparse-applicative
 
-tests:
-  faclig-test:
-    main:                Spec.hs
-    source-dirs:         test
-    ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
-    dependencies:
-    - faclig
+
+# vim: nospell

@@ -1,0 +1,100 @@
+title: rightEye
+author: Cj-bc
+format: Page
+width: 9
+height: 5
+version: 1.0.0
+data:
+  - timestamp: 0
+    contents: |-
+      anchor
+
+
+      ,-------.
+  - timestamp: 35
+    contents: |-
+      anchor
+
+
+      ,-------.
+  - timestamp: 40
+    contents: |-
+      anchor
+
+
+      ,--===--.
+
+  - timestamp: 50
+    contents: |-
+      anchor
+
+
+      ,-=====-.
+  - timestamp: 55
+    contents: |-
+      anchor
+
+
+      ,=======.
+  - timestamp: 60
+    contents: |-
+      anchor
+
+         ___
+      ,='   `=.
+  - timestamp: 65
+    contents: |-
+      anchor
+
+         ___
+      ,-`   `-.
+
+  - timestamp: 70
+    contents: |-
+      anchor
+
+       ._______
+      ''  |"|
+       \  ----
+
+  - timestamp: 100
+    contents: |-
+      anchor
+
+       .------.
+      ''  r"\
+       \  \o/_
+
+  - timestamp: 103
+    contents: |-
+      anchor
+          __
+       ,-"  "-.
+      ''  r"\
+       \  \o/_
+
+  - timestamp: 105
+    contents: |-
+      anchor
+         ____
+       ,"    ".
+      ''  r\
+       \  \/ _
+
+  - timestamp: 110
+    contents: |-
+      anchor
+        _____
+      ./     \.
+      ''  /\
+       \  \/ _
+
+  - timestamp: 150
+    contents: |-
+      anchor
+        _____
+      ./     \.
+      ''  /\
+       \  \/ _
+
+
