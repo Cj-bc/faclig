@@ -44,6 +44,8 @@ extra-deps:
     commit: 6d8b08e88ed72158874ec10ae8537913d23cda54
   - github: Cj-bc/brick-shgif
     commit: 07383e4a896301baea61d1c37176a227eb815033
+  - github: Cj-bc/hVMCP
+    commit: 403e92d4a01008daa1ca7581f501f9522332c780
 
 # Override default flag values for local packages and extra-deps
 flags:

@@ -36,6 +36,8 @@ dependencies:
 - vector
 - aeson
 - text
+- pipes
+- hVMCP
 
 library:
   source-dirs: src

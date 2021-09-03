@@ -1,8 +1,8 @@
 {-# LANGUAGE TemplateHaskell #-}
 module Main where
 
-import Control.Lens (makeLenses, (^.), (&), (.~), over, set)
 import Control.Concurrent (forkIO)
+import Control.Lens (makeLenses, (^.), (&), (.~), over, set, _Just)
 import Control.Monad (when, mapM_, void)
 import Control.Monad.IO.Class (liftIO)
 import System.Exit (exitFailure, exitSuccess)
@@ -20,6 +20,12 @@ import Tart.Canvas
 import Data.Time.Clock (getCurrentTime, UTCTime, diffUTCTime)
 import Graphics.Asciiart.Faclig.Types
 import qualified Options.Applicative as OPT
+import Pipes.VMCP.Marionette (recvMarionetteMsg)
+import Pipes
+import qualified Pipes.Prelude as P
+import Data.VRM
+import Data.VMCP.Marionette (MarionetteMsg(..))
+import Data.UnityEditor
 
 
 -- option parsers {{{
@@ -65,6 +71,7 @@ data Name = NoName deriving (Eq, Ord)
 
 data CustomEvent = Tick
                  | GetFaceData FaceData
+                 | UpdateBlendShape BlendShapeExpression Float
 -- }}}
 
 -- UI {{{
@@ -84,6 +91,22 @@ debugUI (Just i) = border . str $ "FPS: " ++ show (i^.fps)
 -- | event handler
 eHandler :: AppState -> BrickEvent name CustomEvent -> EventM Name (Next AppState)
 eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'q') [])) = halt s
+eHandler s (AppEvent (UpdateBlendShape BlinkL val)) = do
+  let f = s^.face
+      val' = max 0.0 $ 100 - (val* 100) -- If Tick is less than 0, it will stuck unfortunatelly... I have to fix it
+  newFace <- liftIO $ updateFace return (setTickTo  (round  val')) return return return return return f
+  newCanvas <- liftIO $ toCanvas f
+  continue . set face newFace
+           . set currentCanvas newCanvas
+           $ s
+eHandler s (AppEvent (UpdateBlendShape BlinkR val)) = do
+  let f = s^.face
+      val' = max 0.0 $ 100 - (val* 100) -- If Tick is less than 0, it will stuck unfortunatelly... I have to fix it
+  newFace <- liftIO $ updateFace return return (setTickTo  (round  val')) return return return return f
+  newCanvas <- liftIO $ toCanvas f
+  continue . set face newFace
+           . set currentCanvas newCanvas
+           $ s
 eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'i') [])) = case s^.debugInfo of
                                                         Nothing -> do
                                                             di <- liftIO emptyDebugInfo
@@ -101,6 +124,24 @@ app = App { appDraw         = ui
           , appAttrMap      = const $ attrMap Vty.defAttr []
           }
 
+convert ::  Pipe MarionetteMsg CustomEvent IO ()
+convert = do
+  msg <- await
+  convert' msg
+  convert
+
+convert' :: Monad m => MarionetteMsg -> Pipe MarionetteMsg CustomEvent m ()
+convert' (VRMBlendShapeProxyValue name value) = yield $ UpdateBlendShape name value
+convert' _ = pure ()
+
+write :: (BChan CustomEvent) -> Consumer CustomEvent IO ()
+write chan = loop'
+  where
+    loop' = do
+      m <- await
+      lift $ writeBChan chan m
+      loop'
+      
 main :: IO ()
 main = do
     arg <- OPT.execParser opts
@@ -114,6 +155,9 @@ main = do
             chan <- newBChan 10
 
             -- Thread to receive FaceData
+            forkIO . runEffect $ recvMarionetteMsg "192.168.10.3" 39540
+              >-> convert
+              >->  write chan
 
             emptyCanvas <- newCanvas (1, 1)
 
