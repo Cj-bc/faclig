@@ -162,4 +162,5 @@ main = do
             let initialState = AppState f' 0 0 0 0 0.0 0.0 0.0 (0,0) (0,0) (0,0) (0, 0) (0, 0) 0
                                                          emptyCanvas Nothing
                 buildVty = Vty.mkVty Vty.defaultConfig
-            void $ customMain buildVty (Just chan) app initialState
+            vty <- buildVty
+            void $ customMain vty buildVty (Just chan) app initialState
