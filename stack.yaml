@@ -40,7 +40,8 @@ packages:
 #   commit: e7b331f14bcffb8367cd58fbfc8b40ec7642100a
 #
 extra-deps:
-  - tart-0.1.2@sha256:f2c3352fc634b55b905eeb33a8104193e8108cfb812ce4cc9ca22fd701cbb313,3225
+  - github: jtdaugherty/tart
+    commit: 6d8b08e88ed72158874ec10ae8537913d23cda54
   - github: Cj-bc/brick-shgif
     commit: 8d46e92eddc2ab0cecf9b40251cf8961d31e3933
   - github: Cj-bc/FaceDataServer-hs
