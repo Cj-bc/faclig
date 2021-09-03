@@ -3,6 +3,7 @@ author: Cj-bc
 format: Page
 width: 51
 height: 43
+version: 1.0.0
 data:
   - timestamp: 0
     contents: |-
