@@ -22,13 +22,42 @@ packages:
     url: https://github.com/jtdaugherty/tart/archive/6d8b08e88ed72158874ec10ae8537913d23cda54.tar.gz
     size: 290876
 - original:
-    url: https://github.com/Cj-bc/brick-shgif/archive/8d46e92eddc2ab0cecf9b40251cf8961d31e3933.tar.gz
+    hackage: network-multicast-0.3.2@sha256:521547635a6afae408ec25193b3e429082dc0442668dac7ad5cea76ccee39750,979
   completed:
     pantry-tree:
-      sha256: 34a1c9b707f6cdb9d130340e0a5d131e7d27ad7a3116d68b86b88cd07d310460
-      size: 2266
-    version: 1.4.1.0
+      sha256: 3a7b55c4427288622cb2b21a14dd5b4da2a7b3bcad50384db9b0435a0aaacc65
+      size: 393
+    hackage: network-multicast-0.3.2@sha256:521547635a6afae408ec25193b3e429082dc0442668dac7ad5cea76ccee39750,979
+- original:
+    url: https://github.com/Cj-bc/brick-shgif/archive/07383e4a896301baea61d1c37176a227eb815033.tar.gz
+  completed:
+    pantry-tree:
+      sha256: b5bdf5a2b6f0b87981ef3e1776ae3104d116226b4267550ba81b3262d93f9605
+      size: 2270
+    version: 1.5.0.1
     name: brick-shgif
-    sha256: 934c82eb83ad4af118ed0cd6b889e8b4e7a2da1d30832931186a83e718cf32cf
-    url: https://github.com/Cj-bc/brick-shgif/archive/8d46e92eddc2ab0cecf9b40251cf8961d31e3933.tar.gz
-    size: 4456635
+    sha256: 96be6b26fbfc332c0975dd2bd746e56e41f203a8a0bdbfb57c52fe141481f23f
+    url: https://github.com/Cj-bc/brick-shgif/archive/07383e4a896301baea61d1c37176a227eb815033.tar.gz
+    size: 4458904
+- original:
+    url: https://github.com/Cj-bc/FaceDataServer-hs/archive/05784a97972459d6900505cd62368305ba636237.tar.gz
+  completed:
+    pantry-tree:
+      sha256: c86c10a5dd7d0224e060a8e5f6f0f8c7bff2302645f09635c42fd3bde571c089
+      size: 605
+    version: 0.1.0.0
+    name: FaceDataServer-hs
+    sha256: 79e228e23f4203c603990151a71e4a8da646e252cff81ec6930b8bed3ab367e1
+    url: https://github.com/Cj-bc/FaceDataServer-hs/archive/05784a97972459d6900505cd62368305ba636237.tar.gz
+    size: 4788
+- original:
+    url: https://github.com/Cj-bc/hVMCP/archive/403e92d4a01008daa1ca7581f501f9522332c780.tar.gz
+  completed:
+    pantry-tree:
+      sha256: 8f02d0164ee4a54c85c75f885f1c971407fbf8af0014de0ca2c9c3a1794da4c6
+      size: 861
+    version: 0.1.0.0
+    name: hVMCP
+    sha256: 60c5a5e710c78081d69ea5e1291d65e7eaccbfdd1548653363d5352f59ad1a14
+    url: https://github.com/Cj-bc/hVMCP/archive/403e92d4a01008daa1ca7581f501f9522332c780.tar.gz
+    size: 20241
