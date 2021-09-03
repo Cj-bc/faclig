@@ -3,52 +3,32 @@
 # For more information, please see the documentation at:
 #   https://docs.haskellstack.org/en/stable/lock_files
 
-packages:
-- completed:
-    hackage: brick-0.46@sha256:78629a4da6b759c78ec264bedc9e794edeb55a302d17015d0278620eef4ebe29,13852
-    pantry-tree:
-      size: 3752
-      sha256: 1a8c529c82fd79070f4c48bdd34496a864c88130e8c07a766fa1111823f6866d
-  original:
-    hackage: brick-0.46@sha256:78629a4da6b759c78ec264bedc9e794edeb55a302d17015d0278620eef4ebe29,13852
-- completed:
-    hackage: tart-0.1.2@sha256:f2c3352fc634b55b905eeb33a8104193e8108cfb812ce4cc9ca22fd701cbb313,3225
-    pantry-tree:
-      size: 2798
-      sha256: 3f3a6f85b86b6f31a6be0121f0c24de5f000ecd5c8603a2066722896f0ed6f2b
-  original:
-    hackage: tart-0.1.2@sha256:f2c3352fc634b55b905eeb33a8104193e8108cfb812ce4cc9ca22fd701cbb313,3225
-- completed:
-    size: 4456635
-    url: https://github.com/Cj-bc/brick-shgif/archive/8d46e92eddc2ab0cecf9b40251cf8961d31e3933.tar.gz
-    cabal-file:
-      size: 2043
-      sha256: 38fa48455c0829ba245f4e109e8194d2e9fa20d2b849568dfb28c4521f015d48
-    name: brick-shgif
-    version: 1.4.1.0
-    sha256: 934c82eb83ad4af118ed0cd6b889e8b4e7a2da1d30832931186a83e718cf32cf
-    pantry-tree:
-      size: 2266
-      sha256: 34a1c9b707f6cdb9d130340e0a5d131e7d27ad7a3116d68b86b88cd07d310460
-  original:
-    url: https://github.com/Cj-bc/brick-shgif/archive/8d46e92eddc2ab0cecf9b40251cf8961d31e3933.tar.gz
-- completed:
-    size: 4788
-    url: https://github.com/Cj-bc/FaceDataServer-hs/archive/05784a97972459d6900505cd62368305ba636237.tar.gz
-    cabal-file:
-      size: 1120
-      sha256: c598513cff2e3c68e0b572911ccd9283ef40affec25e34b0c7e0bb0224cf0e13
-    name: FaceDataServer-hs
-    version: 0.1.0.0
-    sha256: 79e228e23f4203c603990151a71e4a8da646e252cff81ec6930b8bed3ab367e1
-    pantry-tree:
-      size: 605
-      sha256: c86c10a5dd7d0224e060a8e5f6f0f8c7bff2302645f09635c42fd3bde571c089
-  original:
-    url: https://github.com/Cj-bc/FaceDataServer-hs/archive/05784a97972459d6900505cd62368305ba636237.tar.gz
 snapshots:
-- completed:
-    size: 524799
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/14/17.yaml
-    sha256: 1d72b33c0fc048e23f4f18fd76a6ad79dd1d8a3c054644098a71a09855e40c7c
-  original: lts-14.17
+- original: lts-18.0
+  completed:
+    sha256: c632012da648385b9fa3c29f4e0afd56ead299f1c5528ee789058be410e883c0
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/18/0.yaml
+    size: 585393
+packages:
+- original:
+    url: https://github.com/jtdaugherty/tart/archive/6d8b08e88ed72158874ec10ae8537913d23cda54.tar.gz
+  completed:
+    pantry-tree:
+      sha256: af9690d94ae9e652713a6136d1d6ee978c86412763930d5286bff1ba50ef6ffb
+      size: 3246
+    version: '0.3'
+    name: tart
+    sha256: 826a72c59b4627050ae75b5dc6083423d6b317cad506b99477bec23b55607e2e
+    url: https://github.com/jtdaugherty/tart/archive/6d8b08e88ed72158874ec10ae8537913d23cda54.tar.gz
+    size: 290876
+- original:
+    url: https://github.com/Cj-bc/brick-shgif/archive/8d46e92eddc2ab0cecf9b40251cf8961d31e3933.tar.gz
+  completed:
+    pantry-tree:
+      sha256: 34a1c9b707f6cdb9d130340e0a5d131e7d27ad7a3116d68b86b88cd07d310460
+      size: 2266
+    version: 1.4.1.0
+    name: brick-shgif
+    sha256: 934c82eb83ad4af118ed0cd6b889e8b4e7a2da1d30832931186a83e718cf32cf
+    url: https://github.com/Cj-bc/brick-shgif/archive/8d46e92eddc2ab0cecf9b40251cf8961d31e3933.tar.gz
+    size: 4456635

@@ -1,9 +1,9 @@
 {-# LANGUAGE TemplateHaskell #-}
 module Main where
 
-import Control.Concurrent (forkIO, threadDelay)
 import Control.Lens (makeLenses, (^.), (&), (.~), over, set)
-import Control.Monad (when, forM_, forever, void)
+import Control.Concurrent (forkIO)
+import Control.Monad (when, mapM_, void)
 import Control.Monad.IO.Class (liftIO)
 import System.Exit (exitFailure, exitSuccess)
 import System.Environment (getArgs)
@@ -16,13 +16,7 @@ import Brick.BChan
 import Brick.Extensions.Shgif.Widgets (shgif, canvas)
 import Shgif.Type (Shgif,  shgifToCanvas, width, height)
 import Shgif.Loader (fromFile)
-import Shgif.Updater (updateShgifNoLoop, updateShgif, updateShgifReversedNoLoop
-                     , setShgifTickTo)
-import FaceDataServer
-import FaceDataServer.Types
-import FaceDataServer.Connection (getFaceData)
 import Tart.Canvas
-import Network.Multicast (multicastReceiver)
 import Data.Time.Clock (getCurrentTime, UTCTime, diffUTCTime)
 import Graphics.Asciiart.Faclig.Types
 import qualified Options.Applicative as OPT
@@ -90,37 +84,6 @@ debugUI (Just i) = border . str $ "FPS: " ++ show (i^.fps)
 -- | event handler
 eHandler :: AppState -> BrickEvent name CustomEvent -> EventM Name (Next AppState)
 eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'q') [])) = halt s
-eHandler s (AppEvent (GetFaceData d)) = do
-            -- TODO: Use mouth_width_percent, face_x_radian, face_y_radian, face_z_radian
-            let f = s^.face
-            newFace <- liftIO $ updateFace updateShgif
-                                           (setShgifTickTo $ d^.left_eye_percent)
-                                           (setShgifTickTo $ d^.right_eye_percent)
-                                           updateShgif
-                                           (setShgifTickTo $ d^.mouth_height_percent)  -- TODO: apply mouthWSize
-                                           updateShgif
-                                           updateShgif
-                                           f
-            newCanvas <- liftIO $ toCanvas f
-            debugInfo' <- updateDebugInfo (s^.debugInfo)
-            continue . set face newFace
-                     . set currentCanvas newCanvas
-                     . set debugInfo debugInfo'
-                     $ s
-    where
-        -- | Update Debug Information if it required
-        updateDebugInfo :: Maybe DebugInfo -> EventM Name (Maybe DebugInfo)
-        updateDebugInfo Nothing  = return Nothing
-        updateDebugInfo (Just i) = do
-            currentTime <- liftIO getCurrentTime
-            let diffSec = diffUTCTime currentTime (i^.lastFrameArrivedTime)
-                c_fps   = round $ 1 / diffSec
-
-            return . Just . set lastFrameArrivedTime currentTime
-                          . set fps c_fps
-                          $ i
-
-
 eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'i') [])) = case s^.debugInfo of
                                                         Nothing -> do
                                                             di <- liftIO emptyDebugInfo
@@ -148,14 +111,9 @@ main = do
     case face of
         Left e -> print e >> exitFailure
         Right f' -> do
-            s <- multicastReceiver defaultGroupAddr defaultPortNumber
             chan <- newBChan 10
 
             -- Thread to receive FaceData
-            forkIO $ forever $ do
-                facedata <- getFaceData s
-                writeBChan chan $ GetFaceData facedata
-                threadDelay 1000 -- wait 1 ms
 
             emptyCanvas <- newCanvas (1, 1)
 
