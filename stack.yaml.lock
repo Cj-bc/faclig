@@ -22,13 +22,6 @@ packages:
     url: https://github.com/jtdaugherty/tart/archive/6d8b08e88ed72158874ec10ae8537913d23cda54.tar.gz
     size: 290876
 - original:
-    hackage: network-multicast-0.3.2@sha256:521547635a6afae408ec25193b3e429082dc0442668dac7ad5cea76ccee39750,979
-  completed:
-    pantry-tree:
-      sha256: 3a7b55c4427288622cb2b21a14dd5b4da2a7b3bcad50384db9b0435a0aaacc65
-      size: 393
-    hackage: network-multicast-0.3.2@sha256:521547635a6afae408ec25193b3e429082dc0442668dac7ad5cea76ccee39750,979
-- original:
     url: https://github.com/Cj-bc/brick-shgif/archive/07383e4a896301baea61d1c37176a227eb815033.tar.gz
   completed:
     pantry-tree:
@@ -40,24 +33,13 @@ packages:
     url: https://github.com/Cj-bc/brick-shgif/archive/07383e4a896301baea61d1c37176a227eb815033.tar.gz
     size: 4458904
 - original:
-    url: https://github.com/Cj-bc/FaceDataServer-hs/archive/05784a97972459d6900505cd62368305ba636237.tar.gz
+    url: https://github.com/Cj-bc/hVMCP/archive/dfe81957e7b46f3336ad9b94d967c1d63e5f3114.tar.gz
   completed:
     pantry-tree:
-      sha256: c86c10a5dd7d0224e060a8e5f6f0f8c7bff2302645f09635c42fd3bde571c089
-      size: 605
-    version: 0.1.0.0
-    name: FaceDataServer-hs
-    sha256: 79e228e23f4203c603990151a71e4a8da646e252cff81ec6930b8bed3ab367e1
-    url: https://github.com/Cj-bc/FaceDataServer-hs/archive/05784a97972459d6900505cd62368305ba636237.tar.gz
-    size: 4788
-- original:
-    url: https://github.com/Cj-bc/hVMCP/archive/403e92d4a01008daa1ca7581f501f9522332c780.tar.gz
-  completed:
-    pantry-tree:
-      sha256: 8f02d0164ee4a54c85c75f885f1c971407fbf8af0014de0ca2c9c3a1794da4c6
+      sha256: eeb179dfab900dddf77f9e69c1f6cf1382c522f0803efb04f375362f7f272129
       size: 861
     version: 0.1.0.0
     name: hVMCP
-    sha256: 60c5a5e710c78081d69ea5e1291d65e7eaccbfdd1548653363d5352f59ad1a14
-    url: https://github.com/Cj-bc/hVMCP/archive/403e92d4a01008daa1ca7581f501f9522332c780.tar.gz
-    size: 20241
+    sha256: 9c865b5860abd1c9a385a6bf828dd09d5c0a68247d2d08fc8b0584c048464c23
+    url: https://github.com/Cj-bc/hVMCP/archive/dfe81957e7b46f3336ad9b94d967c1d63e5f3114.tar.gz
+    size: 20439
