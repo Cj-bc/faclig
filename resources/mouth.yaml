@@ -9,13 +9,18 @@ data:
     contents: |-
       anchor
 
-      `====='
-  - timestamp: 100
+      -=====-
+  - timestamp: 50
     contents: |-
       anchor
-
+            
+      <=====>
+  - timestamp: 70
+    contents: |-
+      anchor
+       .....
       `====='
-  - timestamp: 130
+  - timestamp: 100
     contents: |-
       anchor
       _______
