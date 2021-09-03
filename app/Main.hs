@@ -2,7 +2,7 @@
 module Main where
 
 import Control.Concurrent (forkIO)
-import Control.Lens (makeLenses, (^.), (&), (.~), over, set, _Just)
+import Control.Lens (makeLenses, (^.), (&), (.~), over, set, _Just, (%~))
 import Control.Monad (when, mapM_, void)
 import Control.Monad.IO.Class (liftIO)
 import System.Exit (exitFailure)
@@ -64,12 +64,19 @@ data AppState = AppState { _face :: Face
                          , _currentCanvas :: Canvas
                          , _debugInfo :: Maybe DebugInfo
                          }
+
+defaultBlendShapes = M.fromList [ (Neutral, 0), (A , 0), (I , 0), (U , 0), (E , 0), (O, 0)
+                                , (Blink, 0), (Joy , 0), (Angry , 0), (Sorrow , 0)
+                                , (Fun, 0), (LookUp , 0), (LookDown, 0)
+                                , (LookLeft , 0), (LookRight, 0)
+                                , (BlinkL , 0), (BlinkR, 0)]
 makeLenses ''AppState
 
 data Name = NoName deriving (Eq, Ord)
 
 data CustomEvent = Tick
                  | UpdateBlendShape BlendShapeExpression Float
+                 | ApplyBlendShape
 -- }}}
 
 -- UI {{{
@@ -89,22 +96,24 @@ debugUI (Just i) = border . str $ "FPS: " ++ show (i^.fps)
 -- | event handler
 eHandler :: AppState -> BrickEvent name CustomEvent -> EventM Name (Next AppState)
 eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'q') [])) = halt s
-eHandler s (AppEvent (UpdateBlendShape BlinkL val)) = do
-  let f = s^.face
-      val' = max 0.0 $ 100 - (val* 100) -- If Tick is less than 0, it will stuck unfortunatelly... I have to fix it
-  newFace <- liftIO $ updateFace return (setTickTo  (round  val')) return return return return return f
-  newCanvas <- liftIO $ toCanvas f
-  continue . set face newFace
-           . set currentCanvas newCanvas
-           $ s
-eHandler s (AppEvent (UpdateBlendShape BlinkR val)) = do
-  let f = s^.face
-      val' = max 0.0 $ 100 - (val* 100) -- If Tick is less than 0, it will stuck unfortunatelly... I have to fix it
-  newFace <- liftIO $ updateFace return return (setTickTo  (round  val')) return return return return f
-  newCanvas <- liftIO $ toCanvas f
-  continue . set face newFace
-           . set currentCanvas newCanvas
-           $ s
+eHandler s (AppEvent (UpdateBlendShape name val)) = continue $ s&blendShapes%~(M.update (const $ Just val) name)
+eHandler s (AppEvent ApplyBlendShape) = do
+               let toPercent = round . (* 100)
+                   toPercentFlipped x = max 0 $ 100 - (toPercent x)
+                   getBshapeVal :: BlendShapeExpression -> Float
+                   getBshapeVal name = maybe 0 id $ (s^.blendShapes)M.!?name
+               newFace <- liftIO $ updateFace return
+                                              (setTickTo . toPercentFlipped $ getBshapeVal BlinkR)
+                                              (setTickTo . toPercentFlipped $ getBshapeVal BlinkL)
+                                              return
+                                              (setTickTo . toPercent $ getBshapeVal O)
+                                              return
+                                              return
+                                              (s^.face)
+               new <- liftIO $ toCanvas newFace
+               continue . set face newFace
+                        . set currentCanvas new
+                        $ s
 eHandler s (VtyEvent (Vty.EvKey (Vty.KChar 'i') [])) = case s^.debugInfo of
                                                         Nothing -> do
                                                             di <- liftIO emptyDebugInfo
@@ -130,6 +139,7 @@ convert = do
 
 convert' :: Monad m => MarionetteMsg -> Pipe MarionetteMsg CustomEvent m ()
 convert' (VRMBlendShapeProxyValue name value) = yield $ UpdateBlendShape name value
+convert' VRMBlendShapeProxyApply = yield ApplyBlendShape
 convert' _ = pure ()
 
 write :: (BChan CustomEvent) -> Consumer CustomEvent IO ()
