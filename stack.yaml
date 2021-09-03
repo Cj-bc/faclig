@@ -43,7 +43,7 @@ extra-deps:
   - github: jtdaugherty/tart
     commit: 6d8b08e88ed72158874ec10ae8537913d23cda54
   - github: Cj-bc/brick-shgif
-    commit: 8d46e92eddc2ab0cecf9b40251cf8961d31e3933
+    commit: 07383e4a896301baea61d1c37176a227eb815033
 
 # Override default flag values for local packages and extra-deps
 flags:
