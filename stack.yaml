@@ -48,7 +48,9 @@ extra-deps:
     commit: 05784a97972459d6900505cd62368305ba636237
 
 # Override default flag values for local packages and extra-deps
-# flags: {}
+flags:
+  tart:
+    libonly: true
 
 # Extra package databases containing global packages
 # extra-package-dbs: []
