@@ -5,15 +5,14 @@ import Control.Concurrent (forkIO)
 import Control.Lens (makeLenses, (^.), (&), (.~), over, set, _Just)
 import Control.Monad (when, mapM_, void)
 import Control.Monad.IO.Class (liftIO)
-import System.Exit (exitFailure, exitSuccess)
+import System.Exit (exitFailure)
 import System.Environment (getArgs)
-import Data.Either (isLeft)
 import qualified Graphics.Vty as Vty
 import Brick
 import Brick.Types (Location)
 import Brick.Widgets.Border (border)
 import Brick.BChan
-import Brick.Extensions.Shgif.Widgets (shgif, canvas)
+import Brick.Extensions.Shgif.Widgets (canvas)
 import Shgif.Type (Shgif,  shgifToCanvas, width, height)
 import Shgif.Loader (fromFile)
 import Tart.Canvas
