@@ -25,6 +25,10 @@ import qualified Pipes.Prelude as P
 import Data.VRM
 import Data.VMCP.Marionette (MarionetteMsg(..))
 import Data.UnityEditor
+import qualified Data.HashMap.Strict as M
+import Linear.Quaternion (Quaternion(..))
+import Linear.V3 (V3(..))
+import Data.Default (Default(..))
 
 
 -- option parsers {{{
@@ -48,20 +52,14 @@ makeLenses ''DebugInfo
 
 emptyDebugInfo = DebugInfo <$> getCurrentTime
                            <*> pure 0
+data Transform = Transform { _rotation :: Quaternion Float, _position :: V3 Float }
+
+instance Default Transform where
+  def = Transform (Quaternion 0 (V3 0 0 0)) (V3 0 0 0)
 
 data AppState = AppState { _face :: Face
-                         , _rightEyeSize :: Percent
-                         , _leftEyeSize :: Percent
-                         , _mouthWSize :: Percent
-                         , _mouthHSize :: Percent
-                         , _faceXRotation :: Radian
-                         , _faceYRotation :: Radian
-                         , _faceZRotation :: Radian
-                         , _rightEyeOffset :: (Int, Int)
-                         , _leftEyeOffset :: (Int, Int)
-                         , _mouthOffset :: (Int, Int)
-                         , _hairOffset :: (Int, Int)
-                         , _noseOffset :: (Int, Int)
+                         , _blendShapes :: M.HashMap BlendShapeExpression Float
+                         , _faceRotation :: Transform
                          , _tick :: Int
                          , _currentCanvas :: Canvas
                          , _debugInfo :: Maybe DebugInfo
@@ -160,8 +158,7 @@ main = do
 
             emptyCanvas <- newCanvas (1, 1)
 
-            let initialState = AppState f' 0 0 0 0 0.0 0.0 0.0 (0,0) (0,0) (0,0) (0, 0) (0, 0) 0
-                                                         emptyCanvas Nothing
+            let initialState = AppState f' defaultBlendShapes def 0 emptyCanvas Nothing
                 buildVty = Vty.mkVty Vty.defaultConfig
             vty <- buildVty
             void $ customMain vty buildVty (Just chan) app initialState
