@@ -29,6 +29,8 @@ import Data.UnityEditor
 
 -- option parsers {{{
 type Args = FilePath
+type Radian = Double
+type Percent = Int
 
 args :: OPT.Parser Args
 args = OPT.argument OPT.str $ OPT.metavar "FACLIG_FILE"
@@ -69,7 +71,6 @@ makeLenses ''AppState
 data Name = NoName deriving (Eq, Ord)
 
 data CustomEvent = Tick
-                 | GetFaceData FaceData
                  | UpdateBlendShape BlendShapeExpression Float
 -- }}}
 
@@ -153,7 +154,6 @@ main = do
         Right f' -> do
             chan <- newBChan 10
 
-            -- Thread to receive FaceData
             forkIO . runEffect $ recvMarionetteMsg "192.168.10.3" 39540
               >-> convert
               >->  write chan
