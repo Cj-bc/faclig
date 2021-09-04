@@ -15,6 +15,7 @@ import Brick.BChan
 import Brick.Extensions.Shgif.Widgets (canvas)
 import Shgif.Type (Shgif,  shgifToCanvas, width, height)
 import Shgif.Loader (fromFile)
+import Shgif.Updater (setTickTo)
 import Tart.Canvas
 import Data.Time.Clock (getCurrentTime, UTCTime, diffUTCTime)
 import Graphics.Asciiart.Faclig.Types
