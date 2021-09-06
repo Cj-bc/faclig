@@ -1,6 +1,10 @@
+[[file:JA_README.org][日本語]]
+
+--------------
+
 * faclig
 
-  [[./docs/img/289767.gif]]
+  [[./docs/img/289767-thumbnail.png]]
 
   Rendering ASCII Art(AA) model that follows [[ https://protocol.vmc.info/ ][VMC Protocol]]
   data on CUI.

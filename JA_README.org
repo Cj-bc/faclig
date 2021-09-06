@@ -1,4 +1,4 @@
-[[file:README.md][English README]]
+[[file:README.org][English README]]
 
 --------------
 
@@ -6,13 +6,14 @@
   :PROPERTIES:
   :CUSTOM_ID: faclig
   :END:
-#+caption: thumbnail
-[[file:docs/img/289767.gif]]
+  
+  #+caption: thumbnail
+  [[./docs/img/289767-thumbnail.png]]
 
-=faclig=は、 [[https://protocol.vmc.info/][VMC Protocol]]に合わせてASCII
-Art(AA)モデルを動かします。
-AA版の[[https://www.live2d.com/][live2D]]を目指しています。
-現在開発途中です。
+  =faclig=は、 [[https://protocol.vmc.info/][VMC Protocol]]に合わせてASCII
+  Art(AA)モデルを動かします。
+  AA版の[[https://www.live2d.com/][live2D]]を目指しています。
+  現在開発途中です。
 
 * 機能
   :PROPERTIES:
@@ -26,8 +27,7 @@ AA版の[[https://www.live2d.com/][live2D]]を目指しています。
   :PROPERTIES:
   :CUSTOM_ID: 使い方
   :END:
-  まず、[[https://booth.pm/ja/items/1779185][Waidayo]] や
-[[https://vmc.info/][  バーチャルモーションキャプチャー]]
+  まず、[[https://booth.pm/ja/items/1779185][Waidayo]] や[[https://vmc.info/][  バーチャルモーションキャプチャー]]
   などのVMCPでのデータ送信に対応したアプリケーションを起動します。
   ([[https://protocol.vmc.info/Reference][vmc.infoページ]]にてアプリケーションの例があります。)
 
