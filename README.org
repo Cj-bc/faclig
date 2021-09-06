@@ -4,7 +4,8 @@
 
 * faclig
 
-  [[./docs/img/289767-thumbnail.png]]
+  #+caption: thumbnail
+  [[./docs/img/thumbnail.gif]]
 
   Rendering ASCII Art(AA) model that follows [[ https://protocol.vmc.info/ ][VMC Protocol]]
   data on CUI.

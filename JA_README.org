@@ -8,7 +8,7 @@
   :END:
   
   #+caption: thumbnail
-  [[./docs/img/289767-thumbnail.png]]
+  [[./docs/img/thumbnail.gif]]
 
   =faclig=は、 [[https://protocol.vmc.info/][VMC Protocol]]に合わせてASCII
   Art(AA)モデルを動かします。
