@@ -16,7 +16,7 @@ license:        GPL-3.0
 license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
-    README.md
+    README.org
     ChangeLog.md
 
 source-repository head
