@@ -1,0 +1,46 @@
+[[file:JA_README.org][日本語]]
+
+--------------
+
+* faclig
+
+  #+caption: thumbnail
+  [[./docs/img/thumbnail.gif]]
+
+  Rendering ASCII Art(AA) model that follows [[ https://protocol.vmc.info/ ][VMC Protocol]]
+  data on CUI.
+
+  This aims to be [[https://www.live2d.com/][Live2D]] for AA
+  Still under development.
+
+
+* feature
+
+  + AA model format
+  + Apply tracking data to model
+    + [X] eye movement (~Blink_{R,L}~ BlendShape)
+    + [X] mouth movement (~O~ BlendShape only)
+
+* How to use this
+
+This require to run one of external application
+(e.g. [[https://booth.pm/ja/items/1779185][Waidayo]], [[https://vmc.info/][virtual motion capture]] which faclig will recieve
+VMC protocol from.
+
+You can find some application from [[https://protocol.vmc.info/Reference][vmc.info page]]
+
+Once it's up, execute command along with faclig model path(format in
+[[file:docs/en/faclig_format.md][faclig_format.md -- en]])
+
+** how to run
+
+   #+begin_src shell
+   # without installing faclig
+   $ stack run -- <PATH>
+   # after installing faclig
+   $ faclig <PATH>
+   #+end_src          
+
+
+* how to install
+

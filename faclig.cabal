@@ -11,12 +11,12 @@ homepage:       https://github.com/Cj-bc/faclig#readme
 bug-reports:    https://github.com/Cj-bc/faclig/issues
 author:         Cj.bc_sd a.k.a Cj-bc
 maintainer:     cj.bc-sd@outlook.jp
-copyright:      MIT
+copyright:      Cj.bc_sd a.k.a Cj-bc
 license:        GPL-3.0
 license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
-    README.md
+    README.org
     ChangeLog.md
 
 source-repository head
