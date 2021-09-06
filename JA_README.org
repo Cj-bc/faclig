@@ -20,8 +20,10 @@
   :CUSTOM_ID: 機能
   :END:
 
-- AAモデルのフォーマット
-- トラッキングデータをAAに適用して動かす
+  + AAモデルのフォーマット
+  + トラッキングデータをAAに適用して動かす
+    + [X] 瞬き(~Blink_{L,R}~ BlendShape)
+    + [X] 口パク(~O~のBlendSHapeのみ)
 
 * 使い方
   :PROPERTIES:

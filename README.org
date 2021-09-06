@@ -17,6 +17,8 @@
 
   + AA model format
   + Apply tracking data to model
+    + [X] eye movement (~Blink_{R,L}~ BlendShape)
+    + [X] mouth movement (~O~ BlendShape only)
 
 * How to use this
 
