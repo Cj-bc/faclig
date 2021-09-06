@@ -1,0 +1,46 @@
+[[file:README.md][English README]]
+
+--------------
+
+* faclig
+  :PROPERTIES:
+  :CUSTOM_ID: faclig
+  :END:
+#+caption: thumbnail
+[[file:docs/img/289767.gif]]
+
+=faclig=は、 [[https://protocol.vmc.info/][VMC Protocol]]に合わせてASCII
+Art(AA)モデルを動かします。
+AA版の[[https://www.live2d.com/][live2D]]を目指しています。
+現在開発途中です。
+
+* 機能
+  :PROPERTIES:
+  :CUSTOM_ID: 機能
+  :END:
+
+- AAモデルのフォーマット
+- トラッキングデータをAAに適用して動かす
+
+* 使い方
+  :PROPERTIES:
+  :CUSTOM_ID: 使い方
+  :END:
+  まず、[[https://booth.pm/ja/items/1779185][Waidayo]] や
+[[https://vmc.info/][  バーチャルモーションキャプチャー]]
+  などのVMCPでのデータ送信に対応したアプリケーションを起動します。
+  ([[https://protocol.vmc.info/Reference][vmc.infoページ]]にてアプリケーションの例があります。)
+
+  そのあと、=faclig=コマンドをfaclig model([[file:docs/ja/faclig_format.md][faclig_format.md -- ja]])
+  のパスを引数に与えて走らせます。
+
+** 実行方法
+   :PROPERTIES:
+   :CUSTOM_ID: 実行方法
+   :END:
+   #+begin_src shell
+     # facligをインストールせずに実行
+     $ stack run -- <PATH>
+     # facligをインストール後に実行
+     $ faclig <PATH>
+   #+end_src
