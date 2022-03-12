@@ -1,0 +1,52 @@
+[[file:README.md][English README]]
+
+* faclig
+  :PROPERTIES:
+  :CUSTOM_ID: faclig
+  :END:
+  
+  #+caption: thumbnail
+  [[file:docs/img/289767.gif]]
+
+  =faclig=は、顔のトラッキングに合わせてASCII Art(AA)モデルを動かします。
+  AA版の[[https://www.live2d.com/][live2D]]を目指しています。
+  これは[[https://github.com/Cj-bc/FDS-protos][Cj-bc/FDS-protos]]のフロントエンドとして設計されています。
+  現在開発途中です。
+
+* 機能
+  :PROPERTIES:
+  :CUSTOM_ID: 機能
+  :END:
+
+  - AAモデルのフォーマット
+  - トラッキングデータをAAに適用して動かす
+
+* 使い方
+  :PROPERTIES:
+  :CUSTOM_ID: 使い方
+  :END:
+  
+  まず、[[https://github.com/Cj-bc/Face-data-server][Cj-bc/Face-Data-Server]]
+  (もしくは、他の[[https://github.com/Cj-bc/FDS-protos][Cj-bc/FDS-protos]]のバックエンド実装) を走らせる必要があります。
+  そのあと、=faclig=コマンドをfaclig model ([[file:docs/ja/faclig_format.md][faclig_format.md -- ja]])
+  のパスを引数に与えて走らせます。
+
+  #+begin_src shell
+    # backendを起動
+    # これは上記リンクを参照
+    $ face-Data-Server &
+    # facligにモデルのパスを与えて実行
+    $ faclig resources/face.faclig.yaml
+  #+end_src
+
+** 実行方法
+   :PROPERTIES:
+   :CUSTOM_ID: 実行方法
+   :END:
+   
+   #+begin_src shell
+     # facligをインストールせずに実行
+     $ stack run -- <PATH>
+     # facligをインストール後に実行
+     $ faclig <PATH>
+   #+end_src

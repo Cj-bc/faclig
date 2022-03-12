@@ -1,0 +1,54 @@
+* faclig
+  :PROPERTIES:
+  :CUSTOM_ID: faclig
+  :END:
+  
+  #+caption: thumbnail
+  [[file:docs/img/289767.gif]]
+
+  Rendering ASCII Art(AA) model that follows Face tracking data on CUI
+  This aims to be [[https://www.live2d.com/][Live2D]] for AA This is
+  designed as [[https://github.com/Cj-bc/FDS-protos][Cj-bc/FDS-protos]]
+  front end. Still under development.
+
+* feature
+  :PROPERTIES:
+  :CUSTOM_ID: feature
+  :END:
+
+  - AA model format
+  - Apply tracking data to model
+
+* How to use this
+  :PROPERTIES:
+  :CUSTOM_ID: how-to-use-this
+  :END:
+  This require to run [[https://github.com/Cj-bc/Face-data-server][Cj-bc/Face-Data-Server]]
+  (or other implementation of [[https://github.com/Cj-bc/FDS-protos][Cj-bc/FDS-protos]] back end).
+  Once it's up, execute command along with faclig model path(format in
+  [[file:docs/en/faclig_format.md][faclig_format.md -- en]])
+
+  #+begin_src shell
+    # run FDS backend
+    # Please refer to the link above
+    $ face-Data-Server &
+    # execute faclig with path
+    $ faclig resources/face.faclig.yaml
+  #+end_src
+
+** how to run
+   :PROPERTIES:
+   :CUSTOM_ID: how-to-run
+   :END:
+   
+   #+begin_src shell
+     # without installing faclig
+     $ stack run -- <PATH>
+     # after installing faclig
+     $ faclig <PATH>
+   #+end_src
+
+* how to install
+  :PROPERTIES:
+  :CUSTOM_ID: how-to-install
+  :END:
