@@ -7,9 +7,10 @@
   [[file:docs/img/289767.gif]]
 
   Rendering ASCII Art(AA) model that follows Face tracking data on CUI
-  This aims to be [[https://www.live2d.com/][Live2D]] for AA This is
-  designed as [[https://github.com/Cj-bc/FDS-protos][Cj-bc/FDS-protos]]
-  front end. Still under development.
+  This aims to be [[https://www.live2d.com/][Live2D]] for AA.
+  This uses [[https://protocol.vmc.info/specification][Virtual motion capture protocol(VMCP)]] and act as Marionette.
+  
+  Still under development.
 
 * feature
   :PROPERTIES:
@@ -23,15 +24,13 @@
   :PROPERTIES:
   :CUSTOM_ID: how-to-use-this
   :END:
-  This require to run [[https://github.com/Cj-bc/Face-data-server][Cj-bc/Face-Data-Server]]
-  (or other implementation of [[https://github.com/Cj-bc/FDS-protos][Cj-bc/FDS-protos]] back end).
+  Start VMCP Performer (You can find some of them at [[https://protocol.vmc.info/Reference][Official website]])
+
+  
   Once it's up, execute command along with faclig model path(format in
   [[file:docs/en/faclig_format.md][faclig_format.md -- en]])
 
   #+begin_src shell
-    # run FDS backend
-    # Please refer to the link above
-    $ face-Data-Server &
     # execute faclig with path
     $ faclig resources/face.faclig.yaml
   #+end_src

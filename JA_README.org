@@ -10,7 +10,7 @@
 
   =faclig=は、顔のトラッキングに合わせてASCII Art(AA)モデルを動かします。
   AA版の[[https://www.live2d.com/][live2D]]を目指しています。
-  これは[[https://github.com/Cj-bc/FDS-protos][Cj-bc/FDS-protos]]のフロントエンドとして設計されています。
+  [[https://protocol.vmc.info/][ばもきゃプロトコル]]に対応しています。
   現在開発途中です。
 
 * 機能
@@ -26,15 +26,13 @@
   :CUSTOM_ID: 使い方
   :END:
   
-  まず、[[https://github.com/Cj-bc/Face-data-server][Cj-bc/Face-Data-Server]]
-  (もしくは、他の[[https://github.com/Cj-bc/FDS-protos][Cj-bc/FDS-protos]]のバックエンド実装) を走らせる必要があります。
-  そのあと、=faclig=コマンドをfaclig model ([[file:docs/ja/faclig_format.md][faclig_format.md -- ja]])
+  まず、 ばもきゃプロトコルのPerformerを起動します ([[https://protocol.vmc.info/Reference][公式の使用例等を参照]]) 。
+  
+  
+  そのあと、 =faclig= コマンドをfaclig model ([[file:docs/ja/faclig_format.md][faclig_format.md -- ja]])
   のパスを引数に与えて走らせます。
 
   #+begin_src shell
-    # backendを起動
-    # これは上記リンクを参照
-    $ face-Data-Server &
     # facligにモデルのパスを与えて実行
     $ faclig resources/face.faclig.yaml
   #+end_src
